@@ -17,7 +17,7 @@ typechain
 cache
 artifacts
 /packages/backend/node_modules
-/packages/backend/deployments/\*
+/packages/backend/deployments/localhost
 
 # Foundry files
 
