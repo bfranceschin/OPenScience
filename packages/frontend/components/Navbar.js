@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -12,8 +13,16 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <ul className="menu menu-horizontal p-0 pr-3 font-semibold uppercase">
-          <li ><a>Explore</a></li>
-          <li ><a>Publish</a></li>
+          <li >
+            <Link href={"/explore"}>
+              Explore
+            </Link>
+          </li>
+          <li >
+            <Link href={"/publish"}>
+              Publish
+            </Link>
+          </li>
         </ul>
         <ConnectButton />
       </div>
