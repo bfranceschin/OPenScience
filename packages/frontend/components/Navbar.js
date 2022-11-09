@@ -1,11 +1,6 @@
 import * as React from 'react'
-
-const ConnectButton = () => {
-  return (
-    // <button className="btn btn-warning p-3 text-xs font-bold">Connect Wallet</button>
-    <button className="btn bg-yellow-500 border-transparent text-[#151617] p-3 font-[600] hover:text-base-100 hover:bg-[#333] hover:font-[600]">Connect Wallet</button>
-  )
-}
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -18,8 +13,16 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <ul className="menu menu-horizontal p-0 pr-3 font-semibold uppercase">
-          <li ><a>Explore</a></li>
-          <li ><a>Publish</a></li>
+          <li >
+            <Link href={"/explore"}>
+              Explore
+            </Link>
+          </li>
+          <li >
+            <Link href={"/publish"}>
+              Publish
+            </Link>
+          </li>
         </ul>
         <ConnectButton />
       </div>
