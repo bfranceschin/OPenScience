@@ -1,11 +1,5 @@
 import * as React from 'react'
-
-const ConnectButton = () => {
-  return (
-    // <button className="btn btn-warning p-3 text-xs font-bold">Connect Wallet</button>
-    <button className="btn bg-yellow-500 border-transparent text-[#151617] p-3 font-[600] hover:text-base-100 hover:bg-[#333] hover:font-[600]">Connect Wallet</button>
-  )
-}
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Navbar = () => {
   return (
