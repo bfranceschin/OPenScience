@@ -32,7 +32,8 @@ const hardhatChain = {
 };
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, hardhatChain],
+  // [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, hardhatChain],
+  [chain.optimismGoerli, hardhatChain],
   [alchemyProvider({ apiKey: alchemyId }), publicProvider()]
 );
 
@@ -49,6 +50,7 @@ const wagmiClient = createClient({
 
 const App = ({ Component, pageProps }) => {
   const isMounted = useIsMounted();
+  console.log(chain)
 
   if (!isMounted) return null;
   return (
