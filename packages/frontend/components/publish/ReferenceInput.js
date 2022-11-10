@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // TODO: como usar a funcionalidade do removeRowButton em um componente separado??
 // import ReferencesTable from './ReferencesTable';
 
-const ReferenceInput = (props) => {
+const ReferenceInput = ({setReferences}) => {
   const [inputReference, setInputReference] = useState("");
   const [referenceList, setReferenceList] = useState([]);
 
@@ -12,6 +12,9 @@ const ReferenceInput = (props) => {
     const newReferenceRow = inputReference
     setReferenceList(arr => [...arr, {id: newReferenceRow, title: "blablabla"}])
     setInputReference('')
+    let ref = referenceList.map(e => e.id)
+    ref.push(newReferenceRow)
+    setReferences(ref)
   }
 
   const PrintReferenceList = () => {
@@ -35,6 +38,9 @@ const ReferenceInput = (props) => {
         return ref.id !== referenceId
       }) 
     )
+    let ref = referenceList.map(e => e.id).filter(id => id !== referenceId)
+    console.log(ref)
+    setReferences(ref)
   }
 
   const removeRowButton = (referenceId) => {

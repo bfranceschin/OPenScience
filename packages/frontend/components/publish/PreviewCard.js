@@ -19,7 +19,16 @@ const PreviewCard = (props) => {
               <p className="mb-2 text-sm text-gray-400">Click to upload or drag and drop</p>
               <p className="text-xs text-gray-400">(SVG, PNG, JPG or GIF)</p>
           </div>
-          <input id="dropzone-file" type="file" className="hidden" accept="image/png, image/svg, image/jpeg, image/gif" onChange={event => setFilePath(event.target.files[0])}/>
+          <input 
+            id="dropzone-file" 
+            type="file"
+            className="hidden" 
+            accept="image/png, image/svg, image/jpeg, image/gif"
+            onChange={event => {
+              setFilePath(event.target.files[0]);
+              props.setImage(event.target.files[0]);
+            }}
+          />
         </label>
       </div>
     )

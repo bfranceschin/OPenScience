@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
-const PdfUploader = () => {
+const PdfUploader = ({setPdf}) => {
   const [inputFile, setInputFile] = useState("");
 
   const removeFileButton = (referenceId) => {
     return (
       <button 
         className="btn btn-circle btn-outline btn-xs border-gray-400"
-        onClick={event => setInputFile("")}
+        onClick={event => {
+          setInputFile("");
+          setPdf(null);
+        }}
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#B0B0B0"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
       </button>
@@ -30,6 +33,8 @@ const PdfUploader = () => {
               onChange={event => {
                 console.log("Arquivo baixado: ", event.target.files[0].name); 
                 setInputFile(event.target.files[0].name)
+                setPdf(event.target.files[0]);
+                // console.log(event.target.files[0])
                 event.target.value = null
                 }} 
             />

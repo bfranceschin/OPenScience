@@ -61,3 +61,5 @@ yarn-error.log\*
 # vercel
 
 .vercel
+
+packages/frontend/nftstoragekey.js

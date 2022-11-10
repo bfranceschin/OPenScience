@@ -50,7 +50,6 @@ const wagmiClient = createClient({
 
 const App = ({ Component, pageProps }) => {
   const isMounted = useIsMounted();
-  console.log(chain)
 
   if (!isMounted) return null;
   return (
