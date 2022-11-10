@@ -1,11 +1,11 @@
 {
-  "31337": [
+  "420": [
     {
-      "name": "localhost",
-      "chainId": "31337",
+      "name": "goerliOptimism",
+      "chainId": "420",
       "contracts": {
         "NFT": {
-          "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          "address": "0xF45B1CdbA9AACE2e9bbE80bf376CE816bb7E73FB",
           "abi": [
             {
               "inputs": [],
