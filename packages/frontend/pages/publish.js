@@ -92,7 +92,6 @@ export default function PublishComponent() {
   
   const mint = async () => {
     // TODO check valid inputs
-    console.log("Minting ...")
     const storeReturn = await storeNFT(
       image,
       inputPdf,
@@ -103,9 +102,6 @@ export default function PublishComponent() {
       references
     )
     console.log("storeReturn", storeReturn)
-    // const url = "ipfs://bafyreifbjpd4vcwfjovdjbptgtr3zfuddkcxpphyylona2hwu4r4idzmay/metadata.json"
-    // const references = ["0", "1"];
-    // console.log(tx)
     let error = null
     let txReceipt
     try {
@@ -123,10 +119,8 @@ export default function PublishComponent() {
       const transferEvent = txReceipt.events.filter(e => e.event === "Transfer")
       const tokenId = transferEvent[0].args.tokenId.toString()
       console.log('tokenId',tokenId)
-      // TODO redirect to the token page
-      // router.push('/nfts/casca_paper_page_temp')
+      router.push(`/nfts/${tokenId}`)
     }
-    
   }
   
   return (
