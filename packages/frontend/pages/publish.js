@@ -29,16 +29,8 @@ import {
   chain,
 } from "wagmi";
 
-import {
-  NETWORK_ID,
-} from "../config";
-const chainId = Number(NETWORK_ID);
-
-import contracts from "../contracts/hardhat_contracts.json";
-const contractAddress =
-  contracts[chainId][0].contracts.NFT.address;
-const contractABI =
-  contracts[chainId][0].contracts.NFT.abi;
+import { getContractData } from '../utils'
+const [contractAddress, contractABI] = getContractData();
 
 // TODO: move it to a different file
 async function storeNFT(image, pdf, title, author, abstract, keywords) {
@@ -52,7 +44,8 @@ async function storeNFT(image, pdf, title, author, abstract, keywords) {
           pdf,
           title, 
           abstract,
-          keywords
+          keywords,
+          author
         }
     })
 }
