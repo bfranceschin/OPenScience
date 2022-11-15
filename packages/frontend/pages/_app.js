@@ -35,7 +35,8 @@ const { chains, provider } = configureChains(
   // [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, hardhatChain],
   // [chain.optimismGoerli, hardhatChain],
   [chain.optimismGoerli],
-  [alchemyProvider({ apiKey: alchemyId }), publicProvider()]
+  // [alchemyProvider({ apiKey: alchemyId }), publicProvider()]
+  [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
