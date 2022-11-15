@@ -1,7 +1,15 @@
 import { Button } from '@material-tailwind/react';
 import React, { Component } from 'react';
+import { useRouter } from 'next/router'
 import Accordion from '../../components/paper/Accordion';
 import Navbar from '../../components/Navbar';
+import {useTokenId, useTokenUri, useTokenMetaData} from "../../hooks/nft"
+
+// function useTokenId () {
+//   const router = useRouter()
+//   const {tokenId} = router.query
+//   return tokenId
+// }
 
 //Todo
 const DowloadPaper = () => {
@@ -17,43 +25,34 @@ const DowloadPaper = () => {
 
 //Todo
 const Title = () => {
+  const tokenId = useTokenId();
+  const metadata = useTokenMetaData(tokenId)
   return (
     <h2 className="mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
-      This is a very cool and useful paper
+      {metadata ? metadata.name : "..."}
     </h2>
   )
 }
 
 //Todo
 const Abstract = () => {
+  const tokenId = useTokenId();
+  const metadata = useTokenMetaData(tokenId)
   return (
     <p className="text-base text-justify text-gray-700 md:text-lg">
       <span className="mb-2 font-semibold leading-5">
         Abstract:&nbsp;
       </span>
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo.
+      {metadata ? metadata.properties.abstract : "..."}
       <br></br>
-      {/* <div className="font-['Georgia']">
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo.
-      </div> */}
     </p>
   )
 }
 
 //Todo
 const References = () => {
+  // const tokenId = useTokenId();
+  // const metadata = useTokenMetaData(tokenId)
   return (
     <div className="sm:text-center mt-8">
       <div className="w-full">
@@ -283,8 +282,9 @@ const Content = () => {
   );
 };
 
-const CascaPaperPageTempComponent = () => {
-
+const NftPageComponent = () => {
+  const tokenId = useTokenId()
+  console.log(tokenId)
   return (
     <div className="bg-base-200">
       <Navbar />
@@ -339,4 +339,4 @@ const outroEstilo = () => {
   )
 }
 
-export default CascaPaperPageTempComponent;
+export default NftPageComponent;
