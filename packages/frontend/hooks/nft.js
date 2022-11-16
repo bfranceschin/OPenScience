@@ -72,6 +72,11 @@ export const useTokenMetaData = (tokenId) => {
   return tokenMetadata
 }
 
+export const useTokenImage = (tokenId) => {
+  const metadata = useTokenMetaData(tokenId)
+  return metadata ? ipfsToHTTP(metadata.image) : null;
+}
+
 export function useTokenId () {
   const router = useRouter()
   const {tokenId} = router.query

@@ -3,7 +3,12 @@ import React, { Component } from 'react';
 import { useRouter } from 'next/router'
 import Accordion from '../../components/paper/Accordion';
 import Navbar from '../../components/Navbar';
-import {useTokenId, useTokenUri, useTokenMetaData} from "../../hooks/nft"
+import {
+  useTokenId,
+  useTokenUri,
+  useTokenMetaData,
+  useTokenImage
+} from "../../hooks/nft"
 
 import {
   ipfsToHTTP,
@@ -253,11 +258,13 @@ const DonationsInfo3 = () => {
 }
 
 const CoverDonateContainer = () => {
+  const tokenId = useTokenId()
+  const imageUrl = useTokenImage(tokenId)
   return (
     <div className="flex flex-col justify-center">
       <div className="max-w-xl mb-6">
         <figure className="h-full overflow-hidden grid grid-rows-2 drop-shadow-md">
-            <img className="card " width="384px" height="100px" src="https://placeimg.com/400/225/arch" />
+            <img className="card " width="384px" height="100px" src={imageUrl} />
         </figure>
         {/** 1o estilo */}
         {/* <DonationsInfo1 /> */}
