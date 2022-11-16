@@ -10,9 +10,14 @@ import {
   useTokenImage
 } from "../../hooks/nft"
 
+import { useContractRead } from "wagmi";
+
 import {
   ipfsToHTTP,
+  getContractData,
 } from '../../utils'
+
+const [contractAddress, contractABI] = getContractData();
 
 // function useTokenId () {
 //   const router = useRouter()
@@ -63,10 +68,84 @@ const Abstract = () => {
   )
 }
 
+const ReferenceRow = ({index, tokenId}) => {
+  // const { data, isError, isLoading } = useContractRead({
+  //   address: contractAddress,
+  //   abi: contractABI,
+  //   functionName: 'getReferences',
+  //   args: [tokenId],
+  // })
+  let router = useRouter()
+  const metadata = useTokenMetaData(tokenId)
+  const rowClick = () => {
+    router.push(`/nfts/${tokenId}`)
+  }
+  return (
+      <tr className="hover" onClick={rowClick}>
+        <td>{index + 1}</td>
+        <td>{metadata ? metadata.name : ""}</td>
+        <td>{metadata ? metadata.properties.author : ""}</td>
+        <td>100 ETH</td>
+      </tr>
+  )
+}
+
+const ReferenceTable = ({references}) => {
+  return (
+    <table className="table w-full">
+      {/* <!-- head --> */}
+      <thead>
+        <tr>
+          <th></th>
+          <th>Title</th>
+          <th>Authors</th>
+          <th>Total Donations</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          references.map((refId, idx) => {
+            const strId = refId.toString()
+            return (
+                <ReferenceRow index={idx} tokenId={strId}/>
+            )
+          })
+        }
+      </tbody>
+    </table>
+  )
+}
+
 //Todo
 const References = () => {
-  // const tokenId = useTokenId();
+  const tokenId = useTokenId();
   // const metadata = useTokenMetaData(tokenId)
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'getReferences',
+    args: [tokenId],
+  })
+  console.log("getreferences", data, isError, isLoading)
+
+  // TODO melhorar isLoading e isError
+  if (isLoading) {
+    return (
+      <h2 className="mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+        Loading references
+      </h2> 
+    )
+  }
+
+  if (isError) {
+    console.log(isError)
+    return (
+      <h2 className="mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+        Error loading references
+      </h2> 
+    )
+  }
+
   return (
     <div className="sm:text-center mt-8">
       <div className="w-full">
@@ -74,40 +153,7 @@ const References = () => {
           References
         </div>
         <div className="overflow-x-auto drop-shadow-md">
-          <table className="table w-full">
-            {/* <!-- head --> */}
-            <thead>
-              <tr>
-                <th></th>
-                <th>Title</th>
-                <th>Authors</th>
-                <th>Total Donations</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* <!-- row 1 --> */}
-              <tr>
-                <th>1</th>
-                <td>Very cool paper tchururu</td>
-                <td>D. Jane, D. John</td>
-                <td>100 ETH</td>
-              </tr>
-              {/* <!-- row 2 --> */}
-              <tr>
-                <th>2</th>
-                <td>Very nice paper pururu</td>
-                <td>D. Jane, D. John</td>
-                <td>50 ETH</td>
-              </tr>
-              {/* <!-- row 3 --> */}
-              <tr>
-                <th>3</th>
-                <td>Awesome fodastico paper parara</td>
-                <td>D. Jane, D. John</td>
-                <td>10 ETH</td>
-              </tr>
-            </tbody>
-          </table>
+          {data.length > 0 ? <ReferenceTable references={data}/> : null}
         </div>
       </div>
     </div>
