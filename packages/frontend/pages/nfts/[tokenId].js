@@ -126,7 +126,6 @@ const References = () => {
     functionName: 'getReferences',
     args: [tokenId],
   })
-  console.log("getreferences", data, isError, isLoading)
 
   // TODO melhorar isLoading e isError
   if (isLoading) {
@@ -346,7 +345,6 @@ const Content = () => {
 
 const NftPageComponent = () => {
   const tokenId = useTokenId()
-  console.log(tokenId)
   return (
     <div className="bg-base-200">
       <Navbar />
