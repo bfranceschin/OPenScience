@@ -5,6 +5,10 @@ import Accordion from '../../components/paper/Accordion';
 import Navbar from '../../components/Navbar';
 import {useTokenId, useTokenUri, useTokenMetaData} from "../../hooks/nft"
 
+import {
+  ipfsToHTTP,
+} from '../../utils'
+
 // function useTokenId () {
 //   const router = useRouter()
 //   const {tokenId} = router.query
@@ -13,12 +17,17 @@ import {useTokenId, useTokenUri, useTokenMetaData} from "../../hooks/nft"
 
 //Todo
 const DowloadPaper = () => {
+  const tokenId = useTokenId();
+  const metadata = useTokenMetaData(tokenId)
+  const pdfUrl = metadata ? ipfsToHTTP(metadata.properties.pdf) : null
   return (
     <div className="text-center mt-10">
       {/* <button className="btn btn-primary bg-black border-black hover:bg-[#570DF8] hover:border-[#570DF8] hover:text-white"> */}
+      <a target="_blank" href={pdfUrl} rel="noopener noreferrer">
       <button className="btn btn-primary bg-black border-black hover:text-base-100 hover:bg-[#333] hover:border-transparent">
         Download Paper
       </button>
+      </a>
     </div>
   )
 }
