@@ -40,9 +40,6 @@ export default function ExploreComponent() {
           </div> 
         </div>
       </div>
-      <h1>Search Papers</h1>
-      <br></br>
-      <p> Should list all the published papers.</p>
     </div>
   )
 }
