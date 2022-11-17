@@ -94,7 +94,7 @@ export const useAllMetadata = () => {
       for (let i=allMetadata.length; i<tokenCount; i++) {
         getTokenMetadata(provider, i).then(
           response => {
-            console.log(i, response)
+            // console.log(i, response)
             // allMetadata.push()
             setAllMetadata(arr => {
               const ret = [...arr, {tokenId: i.toString(), metadata: response.data}]
