@@ -33,8 +33,10 @@ const hardhatChain = {
 
 const { chains, provider } = configureChains(
   // [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, hardhatChain],
-  [chain.optimismGoerli, hardhatChain],
-  [alchemyProvider({ apiKey: alchemyId }), publicProvider()]
+  // [chain.optimismGoerli, hardhatChain],
+  [chain.optimismGoerli],
+  // [alchemyProvider({ apiKey: alchemyId }), publicProvider()]
+  [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({

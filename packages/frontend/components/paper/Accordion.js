@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import AccordionLayout from './AccordionLayout'
+import {useTokenId, useTokenUri, useTokenMetaData} from "../../hooks/nft"
 
 export default function Accordion() {
   const [activeIndices, setActiveIndices] = useState([false, false])
-  console.log('activeIndices', activeIndices)
+  const tokenId = useTokenId();
+  const metadata = useTokenMetaData(tokenId)
+  // console.log('activeIndices', activeIndices)
 
   return (
     <div 
@@ -12,14 +15,14 @@ export default function Accordion() {
     >
         <AccordionLayout 
           title="Keywords" 
-          body="Keyword1 Keyword2 Keyword3" 
+          body={metadata ? metadata.properties.keywords : ""}
           index={0}
           activeIndices={activeIndices}
           setActiveIndices={setActiveIndices} 
         />
         <AccordionLayout 
           title="Authors" 
-          body="Author1 Author2 Author3"
+          body={metadata ? metadata.properties.author : ""}
           index={1}
           activeIndices={activeIndices}
           setActiveIndices={setActiveIndices} 

@@ -5,7 +5,8 @@
 // Conseguir colocar uma altura máxima para a tabela e acrescentar barra de rolagem quando essa altura for atingida
 // Colocar endereço do autor no card, em vez do nome?
 
-import { useState } from 'react';
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { NFTStorage, File } from 'nft.storage'
 
 import Navbar from '../components/Navbar';
@@ -18,11 +19,21 @@ import AuthorInput from '../components/publish/AuthorInput';
 import PdfUploader from '../components/publish/PdfUploader';
 import {NFT_STORAGE_KEY} from '../nftstoragekey';
 
+import {
+  useContract,
+  useContractRead,
+  usePrepareContractWrite,
+  useContractWrite,
+  useSigner,
+  useWaitForTransaction,
+  chain,
+} from "wagmi";
+
+import { getContractData } from '../utils'
+const [contractAddress, contractABI] = getContractData();
+
 // TODO: move it to a different file
-async function storeNFT(image, pdf, title, abstract, keywords, references) {
-    if (references === null) {
-      references = []
-    }
+async function storeNFT(image, pdf, title, author, abstract, keywords) {
     const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
 
     return nftstorage.store({
@@ -34,7 +45,7 @@ async function storeNFT(image, pdf, title, abstract, keywords, references) {
           title, 
           abstract,
           keywords,
-          references
+          author
         }
     })
 }
@@ -63,18 +74,46 @@ export default function PublishComponent() {
   const [inputTitle, setInputTitle] = useState("");
   const [inputKeywords, setInputKeywords] = useState("");
   const [inputAuthor, setInputAuthor] = useState("");
+  let router= useRouter()
 
+  const { data: signerData } = useSigner();
+  const nftContract = useContract({
+    address: contractAddress,
+    abi: contractABI,
+    signerOrProvider: signerData,
+  });
+  
   const mint = async () => {
-    console.log("Minting ...")
-    const response = await storeNFT(
+    // TODO check valid inputs
+    const storeReturn = await storeNFT(
       image,
       inputPdf,
       inputTitle,
+      inputAuthor,
       inputAbstract,
       inputKeywords,
       references
     )
-    console.log("response", response)
+    console.log("storeReturn", storeReturn)
+    let error = null
+    let txReceipt
+    try {
+      const tx = await nftContract.createToken(storeReturn.url, references)
+      txReceipt = await tx.wait()
+    }
+    catch(e) {
+      console.log(e)
+      error = e
+      // TODO show error
+    }
+    if (error === null) {
+      console.log("success")
+      console.log(txReceipt)
+      const transferEvent = txReceipt.events.filter(e => e.event === "Transfer")
+      const tokenId = transferEvent[0].args.tokenId.toString()
+      console.log('tokenId',tokenId)
+      router.push(`/nfts/${tokenId}`)
+    }
   }
   
   return (

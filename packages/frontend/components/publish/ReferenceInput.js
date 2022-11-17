@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
 
+import { useTokenMetaData } from "../../hooks/nft"
+
 // TODO: como usar a funcionalidade do removeRowButton em um componente separado??
 // import ReferencesTable from './ReferencesTable';
+
+const ReferenceTitle = ({tokenId}) => {
+  const metadata = useTokenMetaData(tokenId)
+  return (
+    <div>
+      {metadata ? metadata.name : "..."}
+    </div>
+  )
+}
 
 const ReferenceInput = ({setReferences}) => {
   const [inputReference, setInputReference] = useState("");
@@ -10,35 +21,20 @@ const ReferenceInput = ({setReferences}) => {
   const HandleSetInputReference = () => {
     if (inputReference === "") return;
     const newReferenceRow = inputReference
-    setReferenceList(arr => [...arr, {id: newReferenceRow, title: "blablabla"}])
+    setReferenceList(arr => [...arr, newReferenceRow])
     setInputReference('')
-    let ref = referenceList.map(e => e.id)
+    let ref = referenceList.map(e => e)
     ref.push(newReferenceRow)
     setReferences(ref)
-  }
-
-  const PrintReferenceList = () => {
-    return (
-      <div>
-          {referenceList.map((item) => {
-            return (
-              <div key={item.id}>
-                ****{item.id}
-                <br></br>
-              </div>
-            )
-          })}
-      </div>
-    )
   }
 
   const removeReference = (referenceId) => {
     setReferenceList(arr => 
       arr.filter(ref => {
-        return ref.id !== referenceId
+        return ref !== referenceId
       }) 
     )
-    let ref = referenceList.map(e => e.id).filter(id => id !== referenceId)
+    let ref = referenceList.filter(id => id !== referenceId)
     console.log(ref)
     setReferences(ref)
   }
@@ -78,9 +74,9 @@ const ReferenceInput = ({setReferences}) => {
                       return (
                         <tr key={idx}>
                           <th>{idx}</th>
-                          <td>{item.id}</td>
-                          <td>{item.title}</td>
-                          <td>{removeRowButton(item.id)}</td>
+                          <td>{item}</td>
+                          <td><ReferenceTitle tokenId={item}/></td>
+                          <td>{removeRowButton(item)}</td>
                       </tr>
                       )
                   })}

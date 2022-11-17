@@ -1,59 +1,150 @@
 import { Button } from '@material-tailwind/react';
 import React, { Component } from 'react';
+import { useRouter } from 'next/router'
 import Accordion from '../../components/paper/Accordion';
 import Navbar from '../../components/Navbar';
+import {
+  useTokenId,
+  useTokenUri,
+  useTokenMetaData,
+  useTokenImage
+} from "../../hooks/nft"
+
+import { useContractRead } from "wagmi";
+
+import {
+  ipfsToHTTP,
+  getContractData,
+} from '../../utils'
+
+const [contractAddress, contractABI] = getContractData();
+
+// function useTokenId () {
+//   const router = useRouter()
+//   const {tokenId} = router.query
+//   return tokenId
+// }
 
 //Todo
 const DowloadPaper = () => {
+  const tokenId = useTokenId();
+  const metadata = useTokenMetaData(tokenId)
+  const pdfUrl = metadata ? ipfsToHTTP(metadata.properties.pdf) : null
   return (
     <div className="text-center mt-10">
       {/* <button className="btn btn-primary bg-black border-black hover:bg-[#570DF8] hover:border-[#570DF8] hover:text-white"> */}
+      <a target="_blank" href={pdfUrl} rel="noopener noreferrer">
       <button className="btn btn-primary bg-black border-black hover:text-base-100 hover:bg-[#333] hover:border-transparent">
         Download Paper
       </button>
+      </a>
     </div>
   )
 }
 
 //Todo
 const Title = () => {
+  const tokenId = useTokenId();
+  const metadata = useTokenMetaData(tokenId)
   return (
     <h2 className="mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
-      This is a very cool and useful paper
+      {metadata ? metadata.name : "..."}
     </h2>
   )
 }
 
 //Todo
 const Abstract = () => {
+  const tokenId = useTokenId();
+  const metadata = useTokenMetaData(tokenId)
   return (
     <p className="text-base text-justify text-gray-700 md:text-lg">
       <span className="mb-2 font-semibold leading-5">
         Abstract:&nbsp;
       </span>
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo.
+      {metadata ? metadata.properties.abstract : "..."}
       <br></br>
-      {/* <div className="font-['Georgia']">
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-      accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-      quae. explicabo.
-      </div> */}
     </p>
+  )
+}
+
+const ReferenceRow = ({index, tokenId}) => {
+  // const { data, isError, isLoading } = useContractRead({
+  //   address: contractAddress,
+  //   abi: contractABI,
+  //   functionName: 'getReferences',
+  //   args: [tokenId],
+  // })
+  let router = useRouter()
+  const metadata = useTokenMetaData(tokenId)
+  const rowClick = () => {
+    router.push(`/nfts/${tokenId}`)
+  }
+  return (
+      <tr className="hover" onClick={rowClick}>
+        <td>{index + 1}</td>
+        <td>{metadata ? metadata.name : ""}</td>
+        <td>{metadata ? metadata.properties.author : ""}</td>
+        <td>100 ETH</td>
+      </tr>
+  )
+}
+
+const ReferenceTable = ({references}) => {
+  return (
+    <table className="table w-full">
+      {/* <!-- head --> */}
+      <thead>
+        <tr>
+          <th></th>
+          <th>Title</th>
+          <th>Authors</th>
+          <th>Total Donations</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          references.map((refId, idx) => {
+            const strId = refId.toString()
+            return (
+                <ReferenceRow index={idx} tokenId={strId}/>
+            )
+          })
+        }
+      </tbody>
+    </table>
   )
 }
 
 //Todo
 const References = () => {
+  const tokenId = useTokenId();
+  // const metadata = useTokenMetaData(tokenId)
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'getReferences',
+    args: [tokenId],
+  })
+
+  // TODO melhorar isLoading e isError
+  if (isLoading) {
+    return (
+      <h2 className="mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+        Loading references
+      </h2> 
+    )
+  }
+
+  if (isError) {
+    console.log(isError)
+    return (
+      <h2 className="mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+        Error loading references
+      </h2> 
+    )
+  }
+
   return (
     <div className="sm:text-center mt-8">
       <div className="w-full">
@@ -61,40 +152,7 @@ const References = () => {
           References
         </div>
         <div className="overflow-x-auto drop-shadow-md">
-          <table className="table w-full">
-            {/* <!-- head --> */}
-            <thead>
-              <tr>
-                <th></th>
-                <th>Title</th>
-                <th>Authors</th>
-                <th>Total Donations</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* <!-- row 1 --> */}
-              <tr>
-                <th>1</th>
-                <td>Very cool paper tchururu</td>
-                <td>D. Jane, D. John</td>
-                <td>100 ETH</td>
-              </tr>
-              {/* <!-- row 2 --> */}
-              <tr>
-                <th>2</th>
-                <td>Very nice paper pururu</td>
-                <td>D. Jane, D. John</td>
-                <td>50 ETH</td>
-              </tr>
-              {/* <!-- row 3 --> */}
-              <tr>
-                <th>3</th>
-                <td>Awesome fodastico paper parara</td>
-                <td>D. Jane, D. John</td>
-                <td>10 ETH</td>
-              </tr>
-            </tbody>
-          </table>
+          {data.length > 0 ? <ReferenceTable references={data}/> : null}
         </div>
       </div>
     </div>
@@ -245,11 +303,13 @@ const DonationsInfo3 = () => {
 }
 
 const CoverDonateContainer = () => {
+  const tokenId = useTokenId()
+  const imageUrl = useTokenImage(tokenId)
   return (
     <div className="flex flex-col justify-center">
       <div className="max-w-xl mb-6">
         <figure className="h-full overflow-hidden grid grid-rows-2 drop-shadow-md">
-            <img className="card " width="384px" height="100px" src="https://placeimg.com/400/225/arch" />
+            <img className="card " width="384px" height="100px" src={imageUrl} />
         </figure>
         {/** 1o estilo */}
         {/* <DonationsInfo1 /> */}
@@ -283,8 +343,8 @@ const Content = () => {
   );
 };
 
-const CascaPaperPageTempComponent = () => {
-
+const NftPageComponent = () => {
+  const tokenId = useTokenId()
   return (
     <div className="bg-base-200">
       <Navbar />
@@ -339,4 +399,4 @@ const outroEstilo = () => {
   )
 }
 
-export default CascaPaperPageTempComponent;
+export default NftPageComponent;
