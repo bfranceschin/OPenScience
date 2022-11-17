@@ -1,6 +1,6 @@
 
 import axios, { Axios } from 'axios'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/router'
 import {
   useContractRead,
@@ -12,6 +12,7 @@ import {
   getContractData,
   getEthersNftContract,
   ipfsToHTTP,
+  getTokenMetadata,
 } from '../utils'
 
 const [contractAddress, contractABI] = getContractData();
@@ -45,13 +46,10 @@ export const useTokenUri = (tokenId) => {
   const provider = useProvider()
   // console.log(tokenUri)
   useEffect(() => {
-    console.log("useEffect", tokenId, provider)
     if (provider && tokenId) {
       const nftContract = getEthersNftContract(provider)
-      console.log(nftContract)
       nftContract.tokenURI(tokenId).
       then ( uri =>{
-        console.log(uri)
         setTokenUri(uri)
       })
     }
@@ -70,6 +68,46 @@ export const useTokenMetaData = (tokenId) => {
       })
   }
   return tokenMetadata
+}
+
+export const useAllMetadata = () => {
+  const [allMetadata, setAllMetadata] = useState([])
+  const firstRender = useRef(true)
+  const provider = useProvider()
+  const { data: tokenCount, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'numberOfTokens',
+    watch: true,
+  })
+
+  useEffect(() => {
+    console.log("useEffect", tokenCount.toString(), firstRender.current)
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+    if (!tokenCount) {
+      return
+    }
+    if (tokenCount > allMetadata.length) {
+      for (let i=allMetadata.length; i<tokenCount; i++) {
+        getTokenMetadata(provider, i).then(
+          response => {
+            console.log(i, response)
+            // allMetadata.push()
+            setAllMetadata(arr => {
+              const ret = [...arr, {tokenId: i.toString(), metadata: response.data}]
+              ret.sort((e1, e2) => e2.tokenId - e1.tokenId)
+              return ret
+            })
+          }
+        )
+      }
+    }
+  },[tokenCount])
+
+  return allMetadata
 }
 
 export const useTokenImage = (tokenId) => {
