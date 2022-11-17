@@ -6,21 +6,33 @@ import Link from "next/link";
 
 import { useAllMetadata } from '../hooks/nft'
 
-const processSearch = (searchCategory, searchFrase, allMetadata) => {
-  return allMetadata
+const processSearch = (searchField, searchFrase, allMetadata) => {
+  if (!allMetadata) {
+    return allMetadata
+  }
+  const search = allMetadata.filter(e => {
+    if (searchField === '' || searchFrase === '') {
+      return true
+    }
+    if (!e.metadata.properties[searchField]) {
+      return false
+    }
+    const match = e.metadata.properties[searchField].toLowerCase().match(searchFrase.toLowerCase())
+    return match !== null
+  })
+  return search
 }
 
 export default function ExploreComponent() {
-  const [searchCategory, setSearchCategory] = useState('')
+  const [searchField, setSearchField] = useState('')
   const [searchFrase, setSearchFrase] = useState('')
   const allMetadata = useAllMetadata()
-  const searchList = processSearch(searchCategory, searchFrase, allMetadata)
-  // console.log("searchList",searchList)
+  const searchList = processSearch(searchField, searchFrase, allMetadata)
   return (
     <div>
       <Navbar/>
       <div className="flex flex-col w-full place-items-center p-6">
-        <SearchBar />
+        <SearchBar setSearchField={setSearchField} setSearchFrase={setSearchFrase}/>
       </div>      
       <div className="flex flex-col w-full">
         <div className="p-4 place-items-center">  
