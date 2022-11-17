@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import axios, { Axios } from 'axios'
 import {
   NETWORK_ID,
 } from "./config";
@@ -24,3 +25,9 @@ export const getEthersNftContract = (provider) => {
 }
 
 export const ipfsToHTTP = (ipfsName) => ipfsName.replace("ipfs://", "https://ipfs.io/ipfs/");
+
+export const getTokenMetadata = async (provider, tokenId) => {
+  const nftContract = getEthersNftContract(provider)
+  const tokenUri = await nftContract.tokenURI(tokenId)
+  return axios.get(ipfsToHTTP(tokenUri))
+}
