@@ -100,7 +100,6 @@ describe("Testing the NFT contract", function () {
     await expect(contract.claimDonation(0, 0)).to.be.revertedWith(
        "claimDonation: There are no funds to be claimed for this pair (beneficiary, claimee)"
       );
-      // console.log('piiiiiing');
 
     // // _tokenIds[1]
     await contract.createToken( token0Uri, [] );
@@ -110,10 +109,8 @@ describe("Testing the NFT contract", function () {
     
     await contract.connect(alice).donate( 2, {value: donationAmount} );
     let claimable_by_owner = ( (net_donation.mul(2)).div(3) );
-    // console.log('piiiiiing2');
     let claimable_by_ref = ( net_donation.div(3) ).div( refs_2.length );
-    // console.log('piiiiiing');
-    // // 2 is a owner
+    // // 2 is the owner
     expect( await contract.claimable(2, 2) ).to.eq( claimable_by_owner  );
     // // 0 is a ref
     expect( await contract.claimable(0, 2) ).to.eq( claimable_by_ref  );
@@ -122,9 +119,7 @@ describe("Testing the NFT contract", function () {
     let bob_bal = await bob.getBalance();
     let tx_claim = await contract.connect(bob).claimDonation(2, 2);
     let claimer_fee = claimable_by_owner.div(100);
-    // // // // console.log('piiiiiing3'); 
     owner_bal_2 = await owner.getBalance();
-    console.log( owner_bal.add( claimable_by_owner.sub(claimer_fee) ) );
 
     expect ( owner_bal_2 ).to.eq( owner_bal.add( claimable_by_owner.sub(claimer_fee) ) );
     //
@@ -134,8 +129,8 @@ describe("Testing the NFT contract", function () {
     let tx_gasPaid = receipt.gasUsed * receipt.effectiveGasPrice;
     expect(bob_bal_2).to.eq( bob_bal.add( claimer_fee ).sub(tx_gasPaid) );
     //
-    expect (await contract.tokenDonationBalance(2) ).to.eq( net_donation - claimable_by_owner );
-    expect ( await contract.claimable( 0, 2 ) ).to.eq( 0 );
+    expect (await contract.tokenDonationBalance(2) ).to.eq( net_donation.sub( claimable_by_owner ) );
+    expect ( await contract.claimable( 2, 2 ) ).to.eq( 0 );
     console.log('claim to owner w refs passed');
     //
     //
@@ -146,7 +141,7 @@ describe("Testing the NFT contract", function () {
     tx_claim = await contract.connect(bob).claimDonation(0, 2);
     claimer_fee = claimable_by_ref.div(100);
     owner_bal_2 = await owner.getBalance();
-    expect ( owner_bal_2 ).to.eq( owner_bal.add( claimable_by_ref - claimer_fee ) );
+    expect ( owner_bal_2 ).to.eq( owner_bal.add( claimable_by_ref.sub(claimer_fee) ) );
     bob_bal_2 = await bob.getBalance();
     receipt = await tx_claim.wait();
     tx_gasPaid = receipt.gasUsed * receipt.effectiveGasPrice;

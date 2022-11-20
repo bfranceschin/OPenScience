@@ -161,9 +161,10 @@ contract NFT is ERC721URIStorage, ReentrancyGuard, Ownable {
       valueClaimed > 0, "claimDonation: There are no funds to be claimed for this pair (beneficiary, claimee)" 
     );
     
-    uint256 claimer_cut = ( tokenDonationBalance(from) ) / 100; // 1% claim fee
+    uint256 claimer_cut = ( valueClaimed ) / 100; // 1% claim fee
     emit DonationClaimed(from, to, valueClaimed);
     _totalClaimed[from] += valueClaimed;
+    _balanceClaimed[to][from] += valueClaimed;
 
     address payable beneficiary = payable( ownerOf(to) );
 
