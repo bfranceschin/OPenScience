@@ -1,4 +1,5 @@
 import { Button } from '@material-tailwind/react';
+import { ethers } from "ethers";
 import React, { Component } from 'react';
 import { useRouter } from 'next/router'
 import Accordion from '../../components/paper/Accordion';
@@ -263,6 +264,22 @@ const DonationsInfo1 = () => {
 }
 
 const DonationsInfo2 = () => {
+  const tokenId = useTokenId();
+  // const metadata = useTokenMetaData(tokenId)
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'tokenTotalDonated',
+    args: [tokenId],
+    watch: true,
+  })
+  let value = ""
+  if (data) {
+    value = ethers.utils.formatEther(data, {commify: true})
+  }
+  else if (isError) {
+    value = "error"
+  }
   return (
     <div className="stats drop-shadow mt-10">
       <div className="stat">
@@ -272,7 +289,7 @@ const DonationsInfo2 = () => {
         <div className="stat-title font-semibold">Total Donations</div>
         {/* <div className="stat-value text-primary text-10xlg text-black">25.6</div> */}
         {/* <div className="stat-value text-[#81559B] text-10xlg">25.6</div> */}
-        <div className="stat-value text-[#0B7A75] text-10xlg">25.6</div>
+        <div className="stat-value text-[#0B7A75] text-10xlg">{value}</div>
         {/* <div className="stat-value text-[#006D77] text-10xlg">25.6</div> */}
       </div>
       <div className="stat">
