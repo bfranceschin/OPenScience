@@ -65,23 +65,34 @@ const Abstract = () => {
 }
 
 const ReferenceRow = ({index, tokenId}) => {
-  // const { data, isError, isLoading } = useContractRead({
-  //   address: contractAddress,
-  //   abi: contractABI,
-  //   functionName: 'getReferences',
-  //   args: [tokenId],
-  // })
-  let router = useRouter()
+  const router = useRouter()
   const metadata = useTokenMetaData(tokenId)
+
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'tokenTotalDonated',
+    args: [tokenId],
+    watch: true,
+  })
+  let value = ""
+  if (data) {
+    value = ethers.utils.formatEther(data, {commify: true})
+  }
+  else if (isError) {
+    value = "error"
+  }
+
   const rowClick = () => {
     router.push(`/nfts/${tokenId}`)
   }
+  
   return (
       <tr className="hover" onClick={rowClick}>
         <td>{index + 1}</td>
         <td>{metadata ? metadata.name : ""}</td>
         <td>{metadata ? metadata.properties.author : ""}</td>
-        <td>100 ETH</td>
+        <td>{value} ETH</td>
       </tr>
   )
 }
