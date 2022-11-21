@@ -19,12 +19,6 @@ import {
 
 const [contractAddress, contractABI] = getContractData();
 
-// function useTokenId () {
-//   const router = useRouter()
-//   const {tokenId} = router.query
-//   return tokenId
-// }
-
 //Todo
 const DowloadPaper = () => {
   const tokenId = useTokenId();
