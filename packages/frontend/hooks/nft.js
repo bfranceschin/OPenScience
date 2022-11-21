@@ -82,7 +82,6 @@ export const useAllMetadata = () => {
   })
 
   useEffect(() => {
-    console.log("useEffect", tokenCount.toString(), firstRender.current)
     if (firstRender.current) {
       firstRender.current = false
       return
