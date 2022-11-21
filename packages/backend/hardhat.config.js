@@ -5,8 +5,8 @@ require('hardhat-deploy');
 require('@nomiclabs/hardhat-ethers');
 require('@nomiclabs/hardhat-etherscan');
 
-const defaultNetwork = 'localhost'; // to run test the frontend on a local chain
-// const defaultNetwork = 'hardhat'; // to run the tests
+// const defaultNetwork = 'localhost'; // to run test the frontend on a local chain
+const defaultNetwork = 'hardhat'; // to run the tests
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
