@@ -1,6 +1,7 @@
 import { Button } from '@material-tailwind/react';
 import { ethers } from "ethers";
 import React, { Component } from 'react';
+import { useState } from "react";
 import { useRouter } from 'next/router'
 import Accordion from '../../components/paper/Accordion';
 import Navbar from '../../components/Navbar';
@@ -11,7 +12,7 @@ import {
   useTokenImage
 } from "../../hooks/nft"
 
-import { useContractRead } from "wagmi";
+import { useContractWrite, useContractRead, usePrepareContractWrite } from "wagmi";
 
 import {
   ipfsToHTTP,
@@ -226,12 +227,37 @@ const TotalDonation = () => {
   );
 };
 
+function validate(s) {
+    var rgx = /^[0-9]*\.?[0-9]*$/;
+    return s.match(rgx);
+}
+
 const InputDonation = () => {
+  const [donationAmount, setDonationAmount] = useState("")
+  const tokenId = useTokenId();
+  const { config } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'donate',
+    args: [tokenId],
+    overrides: {
+      value: ethers.utils.parseEther(donationAmount === '' ? "0.0" : donationAmount),
+    },
+  })
+  const { write } = useContractWrite(config)
+  const handleChange = (event) => {
+    if (validate(event.target.value))
+      setDonationAmount(event.target.value)
+  }
   return (
     <div className="card form-control place-items-center bg-transparent p-1.5">
-      <input type="text" placeholder="0.01 ETH" className="input input-bordered w-40" />
+      <input type="text"
+             placeholder="0.01 ETH"
+             className="input input-bordered w-40"
+             value = {donationAmount}
+             onChange={handleChange}/>
       {/* <button className="btn btn-primary bg-[#F7BE38] border-transparent text-black hover:text-white uppercase mt-3 text-xs font-bold">Donate</button> */}
-      <button className="btn btn-primary bg-yellow-500 border-transparent text-black hover:text-base-100 hover:bg-[#333] hover:border-transparent uppercase mt-3 text-xs font-bold">Donate</button>
+      <button onClick={write} className="btn btn-primary bg-yellow-500 border-transparent text-black hover:text-base-100 hover:bg-[#333] hover:border-transparent uppercase mt-3 text-xs font-bold">Donate</button>
     </div>
   );
 };
