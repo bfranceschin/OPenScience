@@ -83,7 +83,7 @@ module.exports = {
       chainId: 420,
       // url: "https://goerli.optimism.io/",
       url: `https://opt-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_OPT_GOERLI_KEY}`,
-      accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY}`],
+      accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY_2}`],
       companionNetworks: {
         l1: "goerli",
       },

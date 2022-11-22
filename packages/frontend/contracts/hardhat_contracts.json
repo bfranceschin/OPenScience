@@ -5,7 +5,7 @@
       "chainId": "420",
       "contracts": {
         "NFT": {
-          "address": "0x2f8D338360D095a72680A943A22fE6a0d398a0B4",
+          "address": "0x81b07929881eB81a67EBafAf6C5a33b84c0AFcf2",
           "abi": [
             {
               "inputs": [],
@@ -67,6 +67,12 @@
               "inputs": [
                 {
                   "indexed": false,
+                  "internalType": "address",
+                  "name": "donor",
+                  "type": "address"
+                },
+                {
+                  "indexed": false,
                   "internalType": "uint256",
                   "name": "tokenId",
                   "type": "uint256"
@@ -78,7 +84,7 @@
                   "type": "uint256"
                 }
               ],
-              "name": "BalanceUpdated",
+              "name": "Donation",
               "type": "event"
             },
             {
@@ -87,17 +93,42 @@
                 {
                   "indexed": false,
                   "internalType": "uint256",
-                  "name": "tokenId",
+                  "name": "from",
                   "type": "uint256"
                 },
                 {
                   "indexed": false,
                   "internalType": "uint256",
-                  "name": "totalFunds",
+                  "name": "to",
+                  "type": "uint256"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "uint256",
+                  "name": "valueClaimed",
                   "type": "uint256"
                 }
               ],
               "name": "DonationClaimed",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": false,
+                  "internalType": "uint256",
+                  "name": "from",
+                  "type": "uint256"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "uint256",
+                  "name": "to",
+                  "type": "uint256"
+                }
+              ],
+              "name": "FollowMePut",
               "type": "event"
             },
             {
@@ -117,19 +148,6 @@
                 }
               ],
               "name": "OwnershipTransferred",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "uint256",
-                  "name": "tokenId",
-                  "type": "uint256"
-                }
-              ],
-              "name": "ReferencesUpdated",
               "type": "event"
             },
             {
@@ -156,24 +174,6 @@
               ],
               "name": "Transfer",
               "type": "event"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "tokenId",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "refs",
-                  "type": "uint256[]"
-                }
-              ],
-              "name": "addReferences",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
             },
             {
               "inputs": [
@@ -216,13 +216,42 @@
               "inputs": [
                 {
                   "internalType": "uint256",
-                  "name": "tokenId",
+                  "name": "to",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "from",
                   "type": "uint256"
                 }
               ],
               "name": "claimDonation",
               "outputs": [],
               "stateMutability": "payable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "beneficiary",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "claimee",
+                  "type": "uint256"
+                }
+              ],
+              "name": "claimable",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
               "type": "function"
             },
             {
@@ -475,16 +504,16 @@
               "inputs": [
                 {
                   "internalType": "uint256",
-                  "name": "tokenId",
+                  "name": "from",
                   "type": "uint256"
                 },
                 {
-                  "internalType": "uint256[]",
-                  "name": "refs",
-                  "type": "uint256[]"
+                  "internalType": "uint256",
+                  "name": "to",
+                  "type": "uint256"
                 }
               ],
-              "name": "subReferences",
+              "name": "setFollowMe",
               "outputs": [],
               "stateMutability": "nonpayable",
               "type": "function"
@@ -530,6 +559,25 @@
                 }
               ],
               "name": "tokenDonationBalance",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                }
+              ],
+              "name": "tokenTotalDonated",
               "outputs": [
                 {
                   "internalType": "uint256",

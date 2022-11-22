@@ -1,5 +1,7 @@
 import { Button } from '@material-tailwind/react';
+import { ethers } from "ethers";
 import React, { Component } from 'react';
+import { useState } from "react";
 import { useRouter } from 'next/router'
 import Accordion from '../../components/paper/Accordion';
 import Navbar from '../../components/Navbar';
@@ -10,7 +12,7 @@ import {
   useTokenImage
 } from "../../hooks/nft"
 
-import { useContractRead } from "wagmi";
+import { useContractWrite, useContractRead, usePrepareContractWrite } from "wagmi";
 
 import {
   ipfsToHTTP,
@@ -18,12 +20,6 @@ import {
 } from '../../utils'
 
 const [contractAddress, contractABI] = getContractData();
-
-// function useTokenId () {
-//   const router = useRouter()
-//   const {tokenId} = router.query
-//   return tokenId
-// }
 
 //Todo
 const DowloadPaper = () => {
@@ -69,23 +65,34 @@ const Abstract = () => {
 }
 
 const ReferenceRow = ({index, tokenId}) => {
-  // const { data, isError, isLoading } = useContractRead({
-  //   address: contractAddress,
-  //   abi: contractABI,
-  //   functionName: 'getReferences',
-  //   args: [tokenId],
-  // })
-  let router = useRouter()
+  const router = useRouter()
   const metadata = useTokenMetaData(tokenId)
+
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'tokenTotalDonated',
+    args: [tokenId],
+    watch: true,
+  })
+  let value = ""
+  if (data) {
+    value = ethers.utils.formatEther(data, {commify: true})
+  }
+  else if (isError) {
+    value = "error"
+  }
+
   const rowClick = () => {
     router.push(`/nfts/${tokenId}`)
   }
+  
   return (
       <tr className="hover" onClick={rowClick}>
         <td>{index + 1}</td>
         <td>{metadata ? metadata.name : ""}</td>
         <td>{metadata ? metadata.properties.author : ""}</td>
-        <td>100 ETH</td>
+        <td>{value} ETH</td>
       </tr>
   )
 }
@@ -231,12 +238,37 @@ const TotalDonation = () => {
   );
 };
 
+function validate(s) {
+    var rgx = /^[0-9]*\.?[0-9]*$/;
+    return s.match(rgx);
+}
+
 const InputDonation = () => {
+  const [donationAmount, setDonationAmount] = useState("")
+  const tokenId = useTokenId();
+  const { config } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'donate',
+    args: [tokenId],
+    overrides: {
+      value: ethers.utils.parseEther(donationAmount === '' ? "0.0" : donationAmount),
+    },
+  })
+  const { write } = useContractWrite(config)
+  const handleChange = (event) => {
+    if (validate(event.target.value))
+      setDonationAmount(event.target.value)
+  }
   return (
     <div className="card form-control place-items-center bg-transparent p-1.5">
-      <input type="text" placeholder="0.01 ETH" className="input input-bordered w-40" />
+      <input type="text"
+             placeholder="0.01 ETH"
+             className="input input-bordered w-40"
+             value = {donationAmount}
+             onChange={handleChange}/>
       {/* <button className="btn btn-primary bg-[#F7BE38] border-transparent text-black hover:text-white uppercase mt-3 text-xs font-bold">Donate</button> */}
-      <button className="btn btn-primary bg-yellow-500 border-transparent text-black hover:text-base-100 hover:bg-[#333] hover:border-transparent uppercase mt-3 text-xs font-bold">Donate</button>
+      <button onClick={write} className="btn btn-primary bg-yellow-500 border-transparent text-black hover:text-base-100 hover:bg-[#333] hover:border-transparent uppercase mt-3 text-xs font-bold">Donate</button>
     </div>
   );
 };
@@ -269,6 +301,22 @@ const DonationsInfo1 = () => {
 }
 
 const DonationsInfo2 = () => {
+  const tokenId = useTokenId();
+  // const metadata = useTokenMetaData(tokenId)
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: contractABI,
+    functionName: 'tokenTotalDonated',
+    args: [tokenId],
+    watch: true,
+  })
+  let value = ""
+  if (data) {
+    value = ethers.utils.formatEther(data, {commify: true})
+  }
+  else if (isError) {
+    value = "error"
+  }
   return (
     <div className="stats drop-shadow mt-10">
       <div className="stat">
@@ -278,7 +326,7 @@ const DonationsInfo2 = () => {
         <div className="stat-title font-semibold">Total Donations</div>
         {/* <div className="stat-value text-primary text-10xlg text-black">25.6</div> */}
         {/* <div className="stat-value text-[#81559B] text-10xlg">25.6</div> */}
-        <div className="stat-value text-[#0B7A75] text-10xlg">25.6</div>
+        <div className="stat-value text-[#0B7A75] text-10xlg">{value}</div>
         {/* <div className="stat-value text-[#006D77] text-10xlg">25.6</div> */}
       </div>
       <div className="stat">
