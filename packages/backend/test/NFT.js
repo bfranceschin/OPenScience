@@ -80,49 +80,41 @@ describe("Testing the NFT contract", function () {
   });
 
 
-  it("Tests claim donations", async function () {
-    // claim w/o refs
+  it("Tests claimToOwner", async function () {
+  // claim w/o refs
     let owner_balance = await owner.getBalance();
+    // 
     const donationAmount = ethers.utils.parseEther("1");
     const net_donation = ( donationAmount.mul(99) ).div(100);
-
     await contract.connect(alice).donate(0, {value: donationAmount});
     expect( await contract.claimable(0,0)).to.eq(net_donation);
-
-
-    await contract.connect(bob).claimDonation(0,0);
+    // 
+    await contract.connect(bob).claimToOwner(0);
     let owner_bal_2 = await owner.getBalance();
     expect ( owner_bal_2).to.eq( owner_balance.add(  ( net_donation.mul(99) ).div(100)  ) );
-    console.log('claim w/o refs passed');
+    console.log('claimToOwner w/o refs passed');
     //
     //
-    // claim to owner with refs
-    await expect(contract.claimDonation(0, 0)).to.be.revertedWith(
-       "claimDonation: There are no funds to be claimed for this pair (beneficiary, claimee)"
+    await expect(contract.claimToOwner(0)).to.be.revertedWith(
+      "There are no funds to be claimed for the owner"
       );
-
+  // claim to owner with refs
     // // _tokenIds[1]
     await contract.createToken( token0Uri, [] );
     // // _tokenIds[2] with refs=[0,1]
     let refs_2 = [0,1];
     await contract.createToken( token0Uri, refs_2 );
-    
     await contract.connect(alice).donate( 2, {value: donationAmount} );
     let claimable_by_owner = ( (net_donation.mul(2)).div(3) );
-    let claimable_by_ref = ( net_donation.div(3) ).div( refs_2.length );
-    // // 2 is the owner
     expect( await contract.claimable(2, 2) ).to.eq( claimable_by_owner  );
-    // // 0 is a ref
-    expect( await contract.claimable(0, 2) ).to.eq( claimable_by_ref  );
-    
+    // 
     owner_bal = await owner.getBalance();
     let bob_bal = await bob.getBalance();
-    let tx_claim = await contract.connect(bob).claimDonation(2, 2);
+    let tx_claim = await contract.connect(bob).claimToOwner(2);
     let claimer_fee = claimable_by_owner.div(100);
     owner_bal_2 = await owner.getBalance();
-
     expect ( owner_bal_2 ).to.eq( owner_bal.add( claimable_by_owner.sub(claimer_fee) ) );
-    //
+    // 
     //checks if the claimer got his fee
     let bob_bal_2 = await bob.getBalance();
     receipt = await tx_claim.wait();
@@ -132,21 +124,36 @@ describe("Testing the NFT contract", function () {
     expect (await contract.tokenDonationBalance(2) ).to.eq( net_donation.sub( claimable_by_owner ) );
     expect ( await contract.claimable( 2, 2 ) ).to.eq( 0 );
     console.log('claim to owner w refs passed');
-    //
-    //
-    // claim to ref
+   
+  });
+
+  it("Test claimToRef", async function () {
+    // tokenId = 1; bob is owner
+    await contract.connect(bob).createToken(token0Uri, []);
+    // tokenId = 2; refs = [0,1]
+    const refs = [0,1];
+    await contract.createToken(token0Uri, refs);
+    // 
+    const donationAmount = ethers.utils.parseEther("1");
+    const net_donation = donationAmount.sub( donationAmount.div(100) );
+    await contract.connect(alice).donate(2, {value: donationAmount});
+    // 
+    expect(await contract.tokenDonationBalance(2)).to.eq(net_donation);
+    const claimable_by_ref = ( net_donation.div(3) ).div( refs.length );
     expect( await contract.claimable(0, 2) ).to.eq( claimable_by_ref  );
-    owner_bal = await owner.getBalance();
-    bob_bal = await bob.getBalance();
-    tx_claim = await contract.connect(bob).claimDonation(0, 2);
-    claimer_fee = claimable_by_ref.div(100);
-    owner_bal_2 = await owner.getBalance();
-    expect ( owner_bal_2 ).to.eq( owner_bal.add( claimable_by_ref.sub(claimer_fee) ) );
-    bob_bal_2 = await bob.getBalance();
+    const claimer_bal = await owner.getBalance();
+    const tx_claim = await contract.claimToRef(1, 2);
+    const claimer_fee = claimable_by_ref.div(100);
+    expect( await contract.tokenDonationBalance(1)).to.eq(claimable_by_ref.sub(claimer_fee));
+    expect( await contract.claimable(1,1)).to.eq(claimable_by_ref.sub(claimer_fee));
+    await expect(contract.connect(alice).claimToRef(0,1)).to.be.revertedWith(
+      "There are no funds to be claimed to this reference"
+    );
+    // 
+    const claimer_bal_2 = await owner.getBalance();
     receipt = await tx_claim.wait();
     tx_gasPaid = receipt.gasUsed * receipt.effectiveGasPrice;
-    expect(bob_bal_2).to.eq( bob_bal.add( claimer_fee ).sub(tx_gasPaid) );
-    console.log('claim to ref passed');
+    expect(claimer_bal_2).to.eq( claimer_bal.add( claimer_fee ).sub(tx_gasPaid) );
   });
 
 });

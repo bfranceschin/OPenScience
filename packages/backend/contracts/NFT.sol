@@ -53,11 +53,11 @@ contract NFT is ERC721URIStorage, ReentrancyGuard, Ownable {
 
   uint private _treasuryBalance;
 
-  event Donation (address donor, uint256 tokenId, uint256 value);
+  event Donation (address indexed donor, uint256 indexed tokenId, uint256 value);
 
-  event DonationClaimed (uint256 from, uint256 to, uint256 valueClaimed);
+  event DonationClaimed (uint256 indexed to, uint256 indexed from, uint256 valueClaimed);
 
-  event FollowMePut (uint256 from, uint256 to);
+  event FollowMePut (uint256 indexed from, uint256 indexed to);
     
   
   constructor() ERC721("SciGraph", "SCGP") {}
@@ -124,64 +124,99 @@ contract NFT is ERC721URIStorage, ReentrancyGuard, Ownable {
   }
 
 /**
- * @notice gets the value that can be claimed for a pair (beneficiary, claimee)
- * @dev owner of the token that received the donation has a claim to 2/3
- * owners of references split the remaining 1/3   
- * @param beneficiary tokenId whose owner have a claim over part of the tokenDonationBalance
- * @param claimee tokenId that received the donation
- * @return _ value that _beneficiary_ can receive for that particular _claimee_
+ * @notice gets the value that can be claimed for a pair (to, from)
+ * @dev owner of the token that received the donation has a claim to 2/3_
+ * _references split the remaining 1/3
+ * @param from tokenId that received the donation
+ * @param to tokenId that has a claim over part of the donation received by _from_
+ * @return _ value that _to_ can receive for that particular token (_from_)
  */
   
-  function claimable (uint256 beneficiary, uint256 claimee) public view returns (uint256) {
-    if(_references[claimee].length > 0){
+  function claimable (uint256 to, uint256 from) public view returns (uint256) {
+    if(_references[from].length > 0){
 
-      if(beneficiary == claimee){
-        return ( _totalDonated[claimee] * 2) / 3  - _balanceClaimed[claimee][claimee];
+      if(to == from){
+        return ( _totalDonated[to] * 2) / 3  - _balanceClaimed[to][to];
       }
 
-      return ( _totalDonated[claimee] / 3) / _references[claimee].length - _balanceClaimed[beneficiary][claimee];
+      return ( _totalDonated[from] / 3) / _references[from].length - _balanceClaimed[to][from];
     }
 
-    return tokenDonationBalance(claimee);
+    if(to == from){
+      return tokenDonationBalance(from);
+    }
+    return 0;
   }
 
 
 /**
- * @dev sender pulls a fee 
- * and sends claimable value to address of the owner of _to_: callable by any address
- * @param to id of the token whose owner is the beneficiary
- * @param from id of the token that received the donation  
+ * @dev sender pulls a fee _
+ * and sends claimable value to address of the owner of _tokenId_: callable by any address
+ * @param tokenId id of the token having its donation pulled
  * 
  */
 
-  function claimDonation (uint256 to, uint256 from ) public payable nonReentrant {
+  function claimToOwner (uint256 tokenId ) public nonReentrant {
     
-    uint256 valueClaimed = claimable(to, from);
+    uint256 valueClaimed = claimable(tokenId, tokenId);
     require(
-      valueClaimed > 0, "claimDonation: There are no funds to be claimed for this pair (beneficiary, claimee)" 
+      valueClaimed > 0, "There are no funds to be claimed for the owner" 
     );
     
     uint256 claimer_cut = ( valueClaimed ) / 100; // 1% claim fee
-    emit DonationClaimed(from, to, valueClaimed);
+    emit DonationClaimed(tokenId, tokenId, valueClaimed);
+    _totalClaimed[tokenId] += valueClaimed;
+    _balanceClaimed[tokenId][tokenId] += valueClaimed;
+
+    address payable beneficiary = payable( ownerOf(tokenId) );
+
+    (bool success, ) = beneficiary.call{value: valueClaimed - claimer_cut}("");
+    require(success, "Transfer of owner's funds failed");
+    
+    (bool success_, ) = payable(msg.sender).call{value: claimer_cut}("");
+    require(success_ , "Transfer of claimer's funds failed");
+  }
+
+/**
+ * 
+ * @dev sender pulls a fee _
+ * and sends claimable part of the donation balance to a reference NFT: callable by any address
+ * @param to id of the reference NFT receiving the donation balance
+ * @param from id of the NFT having its donation balance claimed
+ */
+  function claimToRef (uint256 to, uint256 from) public nonReentrant {
+
+    uint256 valueClaimed = claimable(to, from);
+    require( 
+      valueClaimed > 0, "There are no funds to be claimed to this reference"
+    );
+
+    uint256 claimer_cut = valueClaimed / 100;
+    emit DonationClaimed(to, from, valueClaimed);
     _totalClaimed[from] += valueClaimed;
     _balanceClaimed[to][from] += valueClaimed;
 
-    address payable beneficiary = payable( ownerOf(to) );
+    _totalDonated[to] += (valueClaimed - claimer_cut);
 
-    (bool success, ) = beneficiary.call{value: valueClaimed - claimer_cut}("");
-    require(success, "claimDonation: Transfer of beneficiary's funds failed");
-    
     (bool success_, ) = payable(msg.sender).call{value: claimer_cut}("");
-    require(success_ , "claimDonation: Transfer of claimer's funds failed");
+    require(success_ , "Transfer of claimer's funds failed");
+
   }
   
-
+/**
+ * @notice should be used when a onwer wants to update _
+ * the reference list, in which case a new NFT should be minted _
+ * followMe guarantees that any donation sent to the old NFT will be _
+ * sent to the new one and split between the new list of references
+ * @dev updates followMe mapping 
+ * @param from the id of the old NFT
+ * @param to the id of the new updated NFT 
+ */
   function setFollowMe (uint256 from, uint256 to) public {
     require(msg.sender == _ownerOf(from), 'only owner of the token can set a follow me ');
     _followMe[from] = to;
   }
 
   // withdraw treasure?
-  // opensea royalties?
 
 }
