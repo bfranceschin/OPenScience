@@ -60,13 +60,15 @@ export const useTokenUri = (tokenId) => {
 export const useTokenMetaData = (tokenId) => {
   const [tokenMetadata, setTokenMetadata] = useState()
   const tokenUri = useTokenUri(tokenId)
-  if (tokenUri && !tokenMetadata) {
-    axios.get(ipfsToHTTP(tokenUri)).
+  useEffect(() => {
+    if (tokenUri) {
+      axios.get(ipfsToHTTP(tokenUri)).
       then(request => {
         // console.log(request.data)
         setTokenMetadata(request.data)
       })
-  }
+    }
+  },[tokenUri])
   return tokenMetadata
 }
 
