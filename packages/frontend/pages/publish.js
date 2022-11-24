@@ -74,6 +74,7 @@ export default function PublishComponent() {
   const [inputTitle, setInputTitle] = useState("");
   const [inputKeywords, setInputKeywords] = useState("");
   const [inputAuthor, setInputAuthor] = useState("");
+  const [buttonText, setButtonText] = useState("Mint!")
   let router= useRouter()
 
   const { data: signerData } = useSigner();
@@ -84,6 +85,10 @@ export default function PublishComponent() {
   });
   
   const mint = async () => {
+    if (!signerData) {
+      alert("Connect wallet to mint nft.")
+      return
+    }
     // TODO check valid inputs
     const storeReturn = await storeNFT(
       image,
@@ -142,7 +147,7 @@ export default function PublishComponent() {
                   <ReferenceInput setReferences={setReferences} />
                   <PdfUploader setPdf={setPdf}/>
                   <div className="form-control mt-6">
-                    <button onClick={mint} className="btn btn-primary bg-black border-black hover:bg-yellow-500 hover:border-yellow-500 hover:text-black">Mint!</button>
+                    <button onClick={mint} className="btn btn-primary bg-black border-black hover:bg-yellow-500 hover:border-yellow-500 hover:text-black">{buttonText}</button>
                   </div>
                 </div>
               </div>
