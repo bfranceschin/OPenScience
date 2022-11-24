@@ -1,5 +1,9 @@
-# Name of Platfotm
-**Name of Platform** is a platform where users can donate Ether to scientific works registered as NFT's. These NFT's can register other NFT's as reference and split the donatmion revenue with them, forming a big **funding graph** for scientific works. Anyone with an ethereum address can register a work as a NFT.
+# Open Science Project
+The **Open Science Project**'s mission is to contribute to make the access to scienfic information free an accessible to everyone, while enabling scientists to receive funding for their endeavors.
+
+The first step in this mission is **OPen Science Platform**, a platform where users can donate Ether to scientific works registered as NFT's. These NFT's can register other NFT's as reference and split the donatmion revenue with them, forming a big **funding graph** for scientific works. Anyone with an ethereum address can register a work as a NFT. Aside from being a funding platform it is also a publishing platform. When registering their work as a NFT authors can upload documents which are gonna be stored using IPFS. Once that is done a link to the document is provided in the platform making it **accessible to everyone**!!
+
+## Introducing the Graph-Funding technology
 
 ## Overview of the problem
 The problem that this platforms aims to solve is twofold. It's a product of both inneficiencies in the funding of scientific endeavors and restrictions to the access of scientific information.
@@ -24,4 +28,4 @@ It should be uncontroversial to say that scientific info should be open to all. 
 
 **Solution:** A platform tha enables authors to obtain revenUe for their work while keeping it in the PUBLIC DOMAIN.
 
-## Introducing the Graph-Funding technology
+
