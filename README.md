@@ -1,8 +1,21 @@
-# Name of Platfotm
-**Name of Platform** is a platform where users can donate Ether to scientific works registered as NFT's. These NFT's can register other NFT's as reference and split the donatmion revenue with them, forming a big **funding graph** for scientific works. Anyone with an ethereum address can register a work as a NFT.
+# Open Science Project
+- [Mission/OPSPlatform](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#missionopsplatform)
+- [Introducing Graph-Funding Technology](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#introducing-graph-funding-technology)
+- [Overview of the problem](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#overview-of-the-problem)
+- [OPSPlatform Architecture]()
+
+## Mission/OPSPlatform
+The **Open Science Project**'s mission is to contribute to make the access to scienfic information free an accessible to everyone, while enabling scientists to receive funding for their endeavors.
+
+The first step in this mission is **OPen Science Platform**, a platform where users can donate Ether to scientific works registered as NFT's. These NFT's can register other NFT's as reference and split the donatmion revenue with them, forming a big **funding graph** for scientific works. Anyone with an ethereum address can register a work as a NFT. Aside from being a funding platform it is also a publishing platform. When registering their work as a NFT authors can upload documents which are gonna be stored using IPFS. Once that is done a link to the document is provided in the platform making it **accessible to everyone**!!
+
+## Introducing Graph-Funding technology
+The key main innovation that OPSPlatform introduces is the possibility to hardcode how the money received by the scientific works is gonna be split between its own author and all the other authors cited as references. That is crucial because every great scientific work is enabled by many others who came before it. WE ARE ALL STANDING ON THE SHOULDERS OF GIANTS! As a result of this dynamic of coded referencing between the registered works, a big _graph_ emerges, a **Funding Graph**. The money received by a given work, be directly or indirectly as a reference, is gonna be split with the works cited by its author as reference. 
+
+This model guarantees that the most important works, that is the works that have a the biggest impact, are gonna receive the most funds. In the end, that is gonna be decided by the very people who benefit the most from the science: us and the authors who build upon each others work.
 
 ## Overview of the problem
-The problem that this platforms aims to solve is twofold. It's a product of both inneficiencies in the funding of scientific endeavors and restrictions to the access of scientific information.
+The problem that this platforms aims to solve is twofold. It's a product of both inneficiencies in the funding of scientific endeavors and restrictions to the access of scientific information. One leads to the other. To make Science open and free we need to address them both simultaneously.
 ### Funding sources
 Currently, the funding of scientific work comes mainly from these 3 sources:
 1. Industry
@@ -20,8 +33,8 @@ The fact of the matter is that, currently, there is a lack of a system in which 
 **Solution:** An alternative to mitigate this is to enable the authors of past scientific works, that have already produced concrete results and had significant impact in society, as judged by the very people who benefited from it, to receive contributions for their work. This possibility can, not only enable these scientists to fund other projects, nut also serve as a incentive to scientific development. Blockchain is arguably the most powerful tool ever created in regards to the funding of public goods. LET'S LEVERAGE IT TO CAUSE A HUGE IMPACT IN SCIENCE!!!
 
 ### Access to scientific information
-It should be uncontroversial to say that scientific info should be open to all. The more open it is, the greater the probability of a scientific breakthrough happening. Today, very important scientific works are often hidden paywalls and owned by a few big platforms. That is mainly due to the model of funding oulined above. 
+It should be uncontroversial to say that scientific info should be open to all. The more open it is, the greater the probability of a scientific breakthrough happening. Today, very important scientific works are often hidden behind paywalls and owned by a few big platforms. That is mainly due to the model of funding outlined above. 
 
-**Solution:** A platform tha enables authors to obtain revenUe for their work while keeping it in the PUBLIC DOMAIN.
+**Solution:** A platform tha enables authors to obtain revenue for their work while keeping it in the PUBLIC DOMAIN.
 
-## Introducing the Graph-Funding technology
+## OPSPlatform Architecture
