@@ -70,11 +70,12 @@ function setReferences (refs) {
   references = refs
 }
 
+const initialButtomText = "Mint!"
 export default function PublishComponent() {
   const [inputTitle, setInputTitle] = useState("");
   const [inputKeywords, setInputKeywords] = useState("");
   const [inputAuthor, setInputAuthor] = useState("");
-  const [buttonText, setButtonText] = useState("Mint!")
+  const [buttonText, setButtonText] = useState(initialButtomText)
   let router= useRouter()
 
   const { data: signerData } = useSigner();
@@ -89,7 +90,11 @@ export default function PublishComponent() {
       alert("Connect wallet to mint nft.")
       return
     }
+    if (buttonText !== initialButtomText) {
+      return
+    }
     // TODO check valid inputs
+    setButtonText("Storing nft data ...")
     const storeReturn = await storeNFT(
       image,
       inputPdf,
@@ -103,13 +108,17 @@ export default function PublishComponent() {
     let error = null
     let txReceipt
     try {
+      setButtonText("Signing transaction ...")
       const tx = await nftContract.createToken(storeReturn.url, references)
+      setButtonText("Sending transaction ...")
       txReceipt = await tx.wait()
     }
     catch(e) {
       console.log(e)
       error = e
-      // TODO show error
+      let msg = "Transaction error.\n".concat(e) 
+      alert(msg)
+      setButtonText(initialButtomText)
     }
     if (error === null) {
       console.log("success")
