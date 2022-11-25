@@ -12,6 +12,8 @@ The first step in this mission is **OPen Science Platform**, a platform where us
 ## Introducing Graph-Funding technology
 The key main innovation that OPSPlatform introduces is the possibility to hardcode how the money received by the scientific works is gonna be split between its own author and all the other authors cited as references. That is crucial because every great scientific work is enabled by many others who came before it. WE ARE ALL STANDING ON THE SHOULDERS OF GIANTS! As a result of this dynamic of coded referencing between the registered works, a big _graph_ emerges, a **Funding Graph**. The money received by a given work, be directly or indirectly as a reference, is gonna be split with the works cited by its author as reference. 
 
+![Figure 1 Subgraph](images/sub_graph_OPSP.drawio.png)
+
 This model guarantees that the most important works, that is the works that have a the biggest impact, are gonna receive the most funds. In the end, that is gonna be decided by the very people who benefit the most from the science: us and the authors who build upon each others work.
 
 ## Overview of the problem
@@ -37,4 +39,4 @@ It should be uncontroversial to say that scientific info should be open to all. 
 
 **Solution:** A platform tha enables authors to obtain revenue for their work while keeping it in the PUBLIC DOMAIN.
 
-## OPSPlatform Architecture
+## OPSPlatform Documentation
