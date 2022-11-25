@@ -31,3 +31,21 @@ export const getTokenMetadata = async (provider, tokenId) => {
   const tokenUri = await nftContract.tokenURI(tokenId)
   return axios.get(ipfsToHTTP(tokenUri))
 }
+
+export const stringShortener = (str, limit) => {
+  if (str && str.length > limit) {
+    const sliceSize = 15
+    return `${str.slice(0, sliceSize)}...${str.slice(
+      str.length - sliceSize,
+      str.length
+    )}`;
+  }
+  return str;
+};
+
+export const stringTrim = (str, limit) => {
+  if (str && str.length > limit) {
+    return `${str.slice(0, limit)}...`;
+  }
+  return str;
+};

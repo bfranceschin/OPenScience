@@ -32,6 +32,8 @@ import {
 import { getContractData } from '../utils'
 const [contractAddress, contractABI] = getContractData();
 
+const description = "OPenScience: permissionless research publishing and retroactive graph-funding"
+
 // TODO: move it to a different file
 async function storeNFT(image, pdf, title, author, abstract, keywords) {
     const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
@@ -39,7 +41,7 @@ async function storeNFT(image, pdf, title, author, abstract, keywords) {
     return nftstorage.store({
         image,
         name: title,
-        description: 'This is a NFT of the project NFTPapers',
+        description: description,
         properties: {
           pdf,
           title, 
@@ -70,10 +72,12 @@ function setReferences (refs) {
   references = refs
 }
 
+const initialButtomText = "Mint!"
 export default function PublishComponent() {
   const [inputTitle, setInputTitle] = useState("");
   const [inputKeywords, setInputKeywords] = useState("");
   const [inputAuthor, setInputAuthor] = useState("");
+  const [buttonText, setButtonText] = useState(initialButtomText)
   let router= useRouter()
 
   const { data: signerData } = useSigner();
@@ -84,7 +88,15 @@ export default function PublishComponent() {
   });
   
   const mint = async () => {
+    if (!signerData) {
+      alert("Connect wallet to mint nft.")
+      return
+    }
+    if (buttonText !== initialButtomText) {
+      return
+    }
     // TODO check valid inputs
+    setButtonText("Storing nft data ...")
     const storeReturn = await storeNFT(
       image,
       inputPdf,
@@ -98,13 +110,17 @@ export default function PublishComponent() {
     let error = null
     let txReceipt
     try {
+      setButtonText("Signing transaction ...")
       const tx = await nftContract.createToken(storeReturn.url, references)
+      setButtonText("Sending transaction ...")
       txReceipt = await tx.wait()
     }
     catch(e) {
       console.log(e)
       error = e
-      // TODO show error
+      let msg = "Transaction error.\n".concat(e) 
+      alert(msg)
+      setButtonText(initialButtomText)
     }
     if (error === null) {
       console.log("success")
@@ -142,7 +158,7 @@ export default function PublishComponent() {
                   <ReferenceInput setReferences={setReferences} />
                   <PdfUploader setPdf={setPdf}/>
                   <div className="form-control mt-6">
-                    <button onClick={mint} className="btn btn-primary bg-black border-black hover:bg-yellow-500 hover:border-yellow-500 hover:text-black">Mint!</button>
+                    <button onClick={mint} className="btn btn-primary bg-black border-black hover:bg-yellow-500 hover:border-yellow-500 hover:text-black">{buttonText}</button>
                   </div>
                 </div>
               </div>
