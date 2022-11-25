@@ -32,6 +32,8 @@ import {
 import { getContractData } from '../utils'
 const [contractAddress, contractABI] = getContractData();
 
+const description = "OPenScience: permissionless research publishing and retroactive graph-funding"
+
 // TODO: move it to a different file
 async function storeNFT(image, pdf, title, author, abstract, keywords) {
     const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
@@ -39,7 +41,7 @@ async function storeNFT(image, pdf, title, author, abstract, keywords) {
     return nftstorage.store({
         image,
         name: title,
-        description: 'This is a NFT of the project NFTPapers',
+        description: description,
         properties: {
           pdf,
           title, 
