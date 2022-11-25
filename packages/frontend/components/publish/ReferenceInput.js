@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useTokenMetaData } from "../../hooks/nft"
+import { stringTrim } from '../../utils'
 
 // TODO: como usar a funcionalidade do removeRowButton em um componente separado??
 // import ReferencesTable from './ReferencesTable';
@@ -9,7 +10,7 @@ const ReferenceTitle = ({tokenId}) => {
   const metadata = useTokenMetaData(tokenId)
   return (
     <div>
-      {metadata ? metadata.name : "..."}
+      {metadata ? stringTrim(metadata.name, 30) : "..."}
     </div>
   )
 }
