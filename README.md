@@ -2,7 +2,7 @@
 - [Mission/OPSPlatform](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#missionopsplatform)
 - [Introducing Graph-Funding Technology](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#introducing-graph-funding-technology)
 - [Overview of the problem](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#overview-of-the-problem)
-- [OPSPlatform Documentation]()
+- [OPSPlatform application](https://github.com/bfranceschin/encode-metaverse-hackathon#opsplatform-application)
 
 ## Mission/OPSPlatform
 The **Open Science Project**'s mission is to contribute to make the access to scienfic information free an accessible to everyone, while enabling scientists to receive funding for their endeavors.
@@ -45,10 +45,12 @@ It should be uncontroversial to say that scientific info should be open to all. 
 
 ## OPSPlatform application
 
-The OPen Science Platform is gonna be implemented via a variation of a ERC-721 contract and deployed in [Optimism](https://www.optimism.io/). Optimism is a layer 2 solution in Ethereum that uses a tech called optimistic rollup to reach higher scalability than its layer 1 but still enjoy a relatively high level of security, limited of course by the layer 1 in which it operates. We chose Optimism not only because it is one of the best solutions out there enjoy a high security network with relatively low fees, but also because the community behind it is deeply interested in fomenting practical solutions to public funding problems. Of course we, team behind Open Science Project, share this interest and passion, reason why we dedicated ourselves to developing this application.
+The **OPen Science Platform** is gonna be implemented via smart contract and deployed in [Optimism](https://www.optimism.io/). Optimism is a layer 2 solution in Ethereum that uses a tech called _optimistic rollup_ to reach higher scalability than its layer 1 but still enjoy a relatively high level of security, limited of course by the layer 1 in which it operates. 
+
+We chose Optimism not only because it is one of the best solutions out there to enjoy a high security network with relatively low fees, but also because the community behind it is deeply interested in fomenting practical solutions to **public funding problems**. Of course we, the team behind Open Science Project, share this interest and passion, reason why we dedicated ourselves to developing this application.
 
 ### Smart Contract
-As was pointed out, we use a variation of the ERC-721 token standart, with adaptations made to provide the funcionalities outlined above. To see the basic implementations of the stadart visit openzeppelin docs and check out `ERC721` and `ERC721URIStorage`. Below we discuss the main adaptations made to the standart.
+We use a variation of the ERC-721 token standart, with adaptations made to provide the funcionalities outlined above. To see the basic implementations of the standart used visit [openzeppelin docs](https://docs.openzeppelin.com/contracts/2.x/api/token/erc721) and check out `ERC721` and `ERC721URIStorage`. Below we discuss the main adaptations made to the standart.
 
 #### createToken
 The function `createToken` allows a author to register his work as a NFT. The funtion receives a string, `tokenUri`, to be set as metadata and a list of integers, `refs`, to be set as references.
@@ -77,7 +79,7 @@ function _createReferences (uint256 tokenId, uint256[] memory refs) private {
 
 ```
 #### donate
-The function `donate` allows users to donate Ether to a individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. Line 3 and 11 of the block below are used to take 1% of the value donated to the [treasury]() of the protocol. Lines 5 to 7 are explained in [setFolowMe]().
+The function `donate` allows users to donate Ether to a individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. Line 3 and 11 of the block below are used to take 1% of the value donated to the [treasury]() of the protocol. Lines 5 to 7 are explained in [setFolowMe](https://github.com/bfranceschin/encode-metaverse-hackathon#setfollowme).
 ```
 function donate (uint256 tokenId) public payable nonReentrant {
     
@@ -96,7 +98,7 @@ function donate (uint256 tokenId) public payable nonReentrant {
 
 ```
 #### claimToOwner
-claimToOwner is a public function that allows anyone to pull a donated value in Ether to the address of the owner of a NFT in exchange of a 1% fee on the value claimed. Two mappings are updated: `_totalClaimed` and `_balanceClaimed`. The first, together with another mapping `_totalDonated`, allows the contract to check how much balance a particular NFT has to be claimed by all parties envolved. The second is used to check how much balance a particular beneficiary has claim to in a particular NFT. 
+claimToOwner is a public function that allows anyone to pull a donated value in Ether to the address of the owner of a NFT in exchange of a 1% fee on the value claimed. Two mappings are updated: `_totalClaimed` and `_balanceClaimed`. The first, together with another mapping, `_totalDonated`, allows the contract to check how much balance a particular NFT has to be claimed by all parties envolved. The second is used to check how much balance a particular beneficiary has claim to in a particular NFT. 
 ```
 function claimToOwner (uint256 tokenId ) public nonReentrant {
     
@@ -120,7 +122,9 @@ function claimToOwner (uint256 tokenId ) public nonReentrant {
   }
 
 ```
-The function `claimable` is used to calculate how much of the total donated to a particular NFT is claimable by a particular beneficiary. It receives a integer, `to`, representing the token id that has the claim over the donation and a integer, `from`, representing the NFT that received the donation directly.
+The function `claimable` is used to calculate how much of the total donated to a particular NFT is claimable by a particular beneficiary. It receives a integer, `to`, representing the token id that has the claim over the donation and a integer, `from`, representing the NFT that received the donation directly. It returns a integer representind the value that can be claimed.
+
+As it stands in the current format, owners have a claim to 2/3 of the total balance and the references split the remaining 1/3. If the NFT has no references registered, onwer gets the full balance.
 ```
 function claimable (uint256 to, uint256 from) public view returns (uint256) {
     if(_references[from].length > 0){
@@ -163,7 +167,7 @@ function claimToRef (uint256 to, uint256 from) public nonReentrant {
   
 ```
 #### setFollowMe
-This function allows a author to set a tracker from a particular NFT id to another NFT id. When that is done, every donation sent to one id is automatically sent to another one. That function was created because the protocol does not allow for reference list updates. When a author wants to update the reference list, perhaps because he wants to add a reference thar previously did not have a NFT, he needs to create a new NFT. by using setFollowMe he assures that every donation sent to the old NFT is gonna be received by the new one and split in the intended manner through the updated list.
+This function allows a author to set a tracker from a particular NFT id to another NFT id. When that is done, every donation sent to one id is automatically sent to another one. That function was created because the protocol does not allow for reference list updates. When a author wants to update the reference list, perhaps because he wants to add a reference thar previously did not have a NFT, he needs to create a new NFT. By using setFollowMe he assures that every donation sent to the old NFT is gonna be received by the new one and split in the intended manner through the updated list.
 
 The function receives an integer, `from`, representing the NFT id from which the donations should be diverted and an integer, `to`, representing the NFT id that the funds should be diverted to. It is only callable by the owner of NFT `from`.
 ```
@@ -173,7 +177,7 @@ function setFollowMe (uint256 from, uint256 to) public {
   }
 
 ```
-setFollowMe simply updates a mapping. This mapping is used in the function `donate` to direct the donation to the NFT set in the previous function. This aciton can be seen in the line below:
+setFollowMe simply updates a mapping. This mapping is used in the function `donate` to direct the donation to the NFT set in the previous function. This aciton can be seen in the lines below:
 ```
 function donate (uint256 tokenId) public payable nonReentrant {
     //
@@ -188,3 +192,5 @@ function donate (uint256 tokenId) public payable nonReentrant {
 }
 
 ```
+### Treasury
+As already pointed out, a percentage of the donations are taxed by the protocol and sent to a treasury. The intention is to, eventually implement a DAO like governance to decide how to alocate said funds to better the platform and/or fund other iniciatives that might benfit the community.
