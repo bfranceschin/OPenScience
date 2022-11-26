@@ -54,7 +54,7 @@ We use a variation of the ERC-721 token standart, with adaptations made to provi
 
 #### createToken
 The function `createToken` allows a author to register his work as a NFT. The funtion receives a string, `tokenUri`, to be set as metadata and a list of integers, `refs`, to be set as references.
-```
+```solidity
 function createToken (string memory tokenURI, uint256[] memory refs) public returns(uint256) {
     uint256 newTokenId = _tokenIds.current();
     _tokenIds.increment();
@@ -79,7 +79,7 @@ function _createReferences (uint256 tokenId, uint256[] memory refs) private {
 
 ```
 #### donate
-The function `donate` allows users to donate Ether to a individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. Line 3 and 11 of the block below are used to take 1% of the value donated to the [treasury]() of the protocol. Lines 5 to 7 are explained in [setFolowMe](https://github.com/bfranceschin/encode-metaverse-hackathon#setfollowme).
+The function `donate` allows users to donate Ether to a individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. Line 3 and 11 of the block below are used to take 1% of the value donated to the [treasury](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) of the protocol. Lines 5 to 7 are explained in [setFolowMe](https://github.com/bfranceschin/encode-metaverse-hackathon#setfollowme).
 ```
 function donate (uint256 tokenId) public payable nonReentrant {
     
