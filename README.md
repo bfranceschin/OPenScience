@@ -58,11 +58,7 @@ The function `createToken` allows a author to register his work as a NFT. The fu
 function createToken (string memory tokenURI, uint256[] memory refs) public returns(uint256) { ... }
 
 ```
-The function `_createReferences` is used to set the reference entries and check if all the entries exists in the platform.
-```solidity
-function _createReferences (uint256 tokenId, uint256[] memory refs) private { ... } 
-    
-```
+
 #### donate
 The function `donate` allows users to donate Ether to an individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. It also takes a percentage of the donation to the [treasury](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) of the protocol.
 ```solidity
@@ -70,14 +66,14 @@ function donate (uint256 tokenId) public payable nonReentrant { ... }
 
 ```
 #### claimToOwner
-claimToOwner is a public function that allows anyone to pull value in Ether from the balance of a particular NFT to the address of its owner in exchange of a percentage fee on the value claimed.
+`claimToOwner` is a public function that allows anyone to pull value in Ether from the balance of a particular NFT to the address of its owner in exchange of a percentage fee on the value claimed.
 ```solidity
 function claimToOwner (uint256 tokenId ) public nonReentrant { ... }
 
 ```
 
 #### claimToRef
-claimToRef is a public function in that allows anyone to pull a donated value to the balance mapping of a NFT cited as reference in another NFT in exchange of a percentage fee on the value claimed.
+`claimToRef` is a public function in that allows anyone to pull a donated value to the balance mapping of a NFT cited as reference in another NFT in exchange of a percentage fee on the value claimed. It receives an integer, `to`, that represents the id of the NFT that is suposed to receive the funds and an integer, `from`, that represents the id of the NFT from which the funds are being claimed. 
 ```solidity
 function claimToRef (uint256 to, uint256 from) public nonReentrant { ... }
   
