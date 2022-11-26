@@ -66,7 +66,7 @@ function createToken (string memory tokenURI, uint256[] memory refs) public retu
 
 ```
 The function `_createReferences` is used to set the reference entries and check if all the entries exists in the platform.
-```
+```solidity
 function _createReferences (uint256 tokenId, uint256[] memory refs) private { 
     uint i;
     for (i=0 ; i < refs.length ; i++){
@@ -80,7 +80,7 @@ function _createReferences (uint256 tokenId, uint256[] memory refs) private {
 ```
 #### donate
 The function `donate` allows users to donate Ether to a individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. Line 3 and 11 of the block below are used to take 1% of the value donated to the [treasury](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) of the protocol. Lines 5 to 7 are explained in [setFolowMe](https://github.com/bfranceschin/encode-metaverse-hackathon#setfollowme).
-```
+```solidity
 function donate (uint256 tokenId) public payable nonReentrant {
     
     require(tokenId < _tokenIds.current(), "Token does not exist.");
@@ -99,7 +99,7 @@ function donate (uint256 tokenId) public payable nonReentrant {
 ```
 #### claimToOwner
 claimToOwner is a public function that allows anyone to pull a donated value in Ether to the address of the owner of a NFT in exchange of a 1% fee on the value claimed. Two mappings are updated: `_totalClaimed` and `_balanceClaimed`. The first, together with another mapping, `_totalDonated`, allows the contract to check how much balance a particular NFT has to be claimed by all parties envolved. The second is used to check how much balance a particular beneficiary has claim to in a particular NFT. 
-```
+```solidity
 function claimToOwner (uint256 tokenId ) public nonReentrant {
     
     uint256 valueClaimed = claimable(tokenId, tokenId);
@@ -125,7 +125,7 @@ function claimToOwner (uint256 tokenId ) public nonReentrant {
 The function `claimable` is used to calculate how much of the total donated to a particular NFT is claimable by a particular beneficiary. It receives a integer, `to`, representing the token id that has the claim over the donation and a integer, `from`, representing the NFT that received the donation directly. It returns a integer representind the value that can be claimed.
 
 As it stands in the current format, owners have a claim to 2/3 of the total balance and the references split the remaining 1/3. If the NFT has no references registered, onwer gets the full balance.
-```
+```solidity
 function claimable (uint256 to, uint256 from) public view returns (uint256) {
     if(_references[from].length > 0){
 
@@ -145,7 +145,7 @@ function claimable (uint256 to, uint256 from) public view returns (uint256) {
 ```
 #### claimToRef
 claimToRef is a public function in that allows anyone to pull a donated value to the balance mapping of a NFT cited as reference in another NFT in exchange of a 1% fee on the value claimed.
-```
+```solidity
 function claimToRef (uint256 to, uint256 from) public nonReentrant {
 
     uint256 valueClaimed = claimable(to, from);
@@ -170,7 +170,7 @@ function claimToRef (uint256 to, uint256 from) public nonReentrant {
 This function allows a author to set a tracker from a particular NFT id to another NFT id. When that is done, every donation sent to one id is automatically sent to another one. That function was created because the protocol does not allow for reference list updates. When a author wants to update the reference list, perhaps because he wants to add a reference thar previously did not have a NFT, he needs to create a new NFT. By using setFollowMe he assures that every donation sent to the old NFT is gonna be received by the new one and split in the intended manner through the updated list.
 
 The function receives an integer, `from`, representing the NFT id from which the donations should be diverted and an integer, `to`, representing the NFT id that the funds should be diverted to. It is only callable by the owner of NFT `from`.
-```
+```solidity
 function setFollowMe (uint256 from, uint256 to) public {
     require(msg.sender == _ownerOf(from), 'only owner of the token can set a follow me ');
     _followMe[from] = to;
@@ -178,7 +178,7 @@ function setFollowMe (uint256 from, uint256 to) public {
 
 ```
 setFollowMe simply updates a mapping. This mapping is used in the function `donate` to direct the donation to the NFT set in the previous function. This aciton can be seen in the lines below:
-```
+```solidity
 function donate (uint256 tokenId) public payable nonReentrant {
     //
     //
