@@ -55,142 +55,53 @@ We use a variation of the ERC-721 token standart, with adaptations made to provi
 #### createToken
 The function `createToken` allows a author to register his work as a NFT. The funtion receives a string, `tokenUri`, to be set as metadata and a list of integers, `refs`, to be set as references.
 ```solidity
-function createToken (string memory tokenURI, uint256[] memory refs) public returns(uint256) {
-    uint256 newTokenId = _tokenIds.current();
-    _tokenIds.increment();
-    _mint(msg.sender, newTokenId);
-    _setTokenURI(newTokenId, tokenURI);
-    _createReferences(newTokenId, refs);
-    return newTokenId;
-  }
+function createToken (string memory tokenURI, uint256[] memory refs) public returns(uint256) { ... }
 
 ```
 The function `_createReferences` is used to set the reference entries and check if all the entries exists in the platform.
 ```solidity
-function _createReferences (uint256 tokenId, uint256[] memory refs) private { 
-    uint i;
-    for (i=0 ; i < refs.length ; i++){
-      require( refs[i] < _tokenIds.current() , "_createReferences: Invalid tokenId in Reference entries" );
-    } 
+function _createReferences (uint256 tokenId, uint256[] memory refs) private { ... } 
     
-    _references[tokenId] = refs;
-
-  }
-
 ```
 #### donate
-The function `donate` allows users to donate Ether to a individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. Line 3 and 11 of the block below are used to take 1% of the value donated to the [treasury](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) of the protocol. Lines 5 to 7 are explained in [setFolowMe](https://github.com/bfranceschin/encode-metaverse-hackathon#setfollowme).
+The function `donate` allows users to donate Ether to an individual NFT. It is a payable function and receives a integer, `tokenId`, that represents the id of the token inside the contract. It also takes a percentage of the donation to the [treasury](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) of the protocol.
 ```solidity
-function donate (uint256 tokenId) public payable nonReentrant {
-    
-    require(tokenId < _tokenIds.current(), "Token does not exist.");
-    uint256 _tax = msg.value / 100; // 1% treasury fee
-    
-    if (_followMe[tokenId] != 0) {
-      tokenId = _followMe[tokenId];
-    }
-
-    _totalDonated[tokenId] = _totalDonated[tokenId].add(msg.value -_tax);
-    emit Donation (msg.sender, tokenId, msg.value - _tax);
-    _treasuryBalance += _tax;
-
-  }
+function donate (uint256 tokenId) public payable nonReentrant { ... }
 
 ```
 #### claimToOwner
-claimToOwner is a public function that allows anyone to pull a donated value in Ether to the address of the owner of a NFT in exchange of a 1% fee on the value claimed. Two mappings are updated: `_totalClaimed` and `_balanceClaimed`. The first, together with another mapping, `_totalDonated`, allows the contract to check how much balance a particular NFT has to be claimed by all parties envolved. The second is used to check how much balance a particular beneficiary has claim to in a particular NFT. 
+claimToOwner is a public function that allows anyone to pull value in Ether from the balance of a particular NFT to the address of its owner in exchange of a percentage fee on the value claimed.
 ```solidity
-function claimToOwner (uint256 tokenId ) public nonReentrant {
-    
-    uint256 valueClaimed = claimable(tokenId, tokenId);
-    require(
-      valueClaimed > 0, "There are no funds to be claimed for the owner" 
-    );
-    
-    uint256 claimer_cut = ( valueClaimed ) / 100; // 1% claim fee
-    emit DonationClaimed(tokenId, tokenId, valueClaimed);
-    _totalClaimed[tokenId] += valueClaimed;
-    _balanceClaimed[tokenId][tokenId] += valueClaimed;
-
-    address payable beneficiary = payable( ownerOf(tokenId) );
-
-    (bool success, ) = beneficiary.call{value: valueClaimed - claimer_cut}("");
-    require(success, "Transfer of owner's funds failed");
-    
-    (bool success_, ) = payable(msg.sender).call{value: claimer_cut}("");
-    require(success_ , "Transfer of claimer's funds failed");
-  }
+function claimToOwner (uint256 tokenId ) public nonReentrant { ... }
 
 ```
-The function `claimable` is used to calculate how much of the total donated to a particular NFT is claimable by a particular beneficiary. It receives a integer, `to`, representing the token id that has the claim over the donation and a integer, `from`, representing the NFT that received the donation directly. It returns a integer representind the value that can be claimed.
 
-As it stands in the current format, owners have a claim to 2/3 of the total balance and the references split the remaining 1/3. If the NFT has no references registered, onwer gets the full balance.
+#### claimToRef
+claimToRef is a public function in that allows anyone to pull a donated value to the balance mapping of a NFT cited as reference in another NFT in exchange of a percentage fee on the value claimed.
 ```solidity
-function claimable (uint256 to, uint256 from) public view returns (uint256) {
-    if(_references[from].length > 0){
-
-      if(to == from){
-        return ( _totalDonated[to] * 2) / 3  - _balanceClaimed[to][to];
-      }
-
-      return ( _totalDonated[from] / 3) / _references[from].length - _balanceClaimed[to][from];
-    }
-
-    if(to == from){
-      return tokenDonationBalance(from);
-    }
-    return 0;
-  }
+function claimToRef (uint256 to, uint256 from) public nonReentrant { ... }
   
 ```
-#### claimToRef
-claimToRef is a public function in that allows anyone to pull a donated value to the balance mapping of a NFT cited as reference in another NFT in exchange of a 1% fee on the value claimed.
+#### claimable
+The function `claimable` is used to calculate how much of the total donated to a particular NFT is claimable by a particular beneficiary. It receives a integer, `to`, representing the token id that has the claim over the donation and a integer, `from`, representing the NFT that received the donation directly. It returns a integer representing the value that can be claimed. It is called inside both claimToOwner and claimToRef but it is aslo callable from outside the contract so claimers (searchers) can check profit opportunities
 ```solidity
-function claimToRef (uint256 to, uint256 from) public nonReentrant {
-
-    uint256 valueClaimed = claimable(to, from);
-    require( 
-      valueClaimed > 0, "There are no funds to be claimed to this reference"
-    );
-
-    uint256 claimer_cut = valueClaimed / 100;
-    emit DonationClaimed(to, from, valueClaimed);
-    _totalClaimed[from] += valueClaimed;
-    _balanceClaimed[to][from] += valueClaimed;
-
-    _totalDonated[to] += (valueClaimed - claimer_cut);
-
-    (bool success_, ) = payable(msg.sender).call{value: claimer_cut}("");
-    require(success_ , "Transfer of claimer's funds failed");
-
-  }
+function claimable (uint256 to, uint256 from) public view returns (uint256) { ... }
   
 ```
 #### setFollowMe
-This function allows a author to set a tracker from a particular NFT id to another NFT id. When that is done, every donation sent to one id is automatically sent to another one. That function was created because the protocol does not allow for reference list updates. When a author wants to update the reference list, perhaps because he wants to add a reference thar previously did not have a NFT, he needs to create a new NFT. By using setFollowMe he assures that every donation sent to the old NFT is gonna be received by the new one and split in the intended manner through the updated list.
+This function allows a author to set a tracker from a particular NFT id to another NFT id. When that is done, every donation sent to one id is automatically sent to the other. This function was created because the protocol does not allow for reference list updates. When a author wants to update the reference list, perhaps because he wants to add a reference thar previously did not have a NFT, he needs to create a new NFT. By using setFollowMe he assures that every donation sent to the old NFT is gonna be received by the new one and split in the intended manner through the updated list.
 
 The function receives an integer, `from`, representing the NFT id from which the donations should be diverted and an integer, `to`, representing the NFT id that the funds should be diverted to. It is only callable by the owner of NFT `from`.
 ```solidity
-function setFollowMe (uint256 from, uint256 to) public {
-    require(msg.sender == _ownerOf(from), 'only owner of the token can set a follow me ');
-    _followMe[from] = to;
-  }
+function setFollowMe (uint256 from, uint256 to) public { ... }
 
 ```
-setFollowMe simply updates a mapping. This mapping is used in the function `donate` to direct the donation to the NFT set in the previous function. This aciton can be seen in the lines below:
-```solidity
-function donate (uint256 tokenId) public payable nonReentrant {
-    //
-    //
+setFollowMe simply updates a mapping. This mapping is used by the function `donate` to direct the donation to the NFT set in the previous function.
 
-    if (_followMe[tokenId] != 0) {
-      tokenId = _followMe[tokenId];
-    }
+### Treasury/DAO
+As already pointed out, a percentage of the donations are taxed by the protocol and sent to a treasury. The intention is to, eventually implement a DAO like governance to decide how to allocate said funds to better the platform and/or fund other iniciatives that might benfit the community. The DAO is also gonna be responsible for changes in parameters like the _treasury tax_, the _claimer's fee_ and the _split between authors and references_.
 
-    // updates balance mappings //
-    //      //      //      //
-}
+### Claimers (searchers)
+As can be seen above, both pull functions are callable by any address. The functions are programed to sent the right amout, in accordance with some state variables to the owner/reference of the a particular NFT. To encourage people to call said functions and provide this service, the protocol pays a percentage fee to the address that calls the function. What is expected by that is that the profit opportunity that emerges from this dynamic will give rise to searchers (which we call _claimers_) that will be constantly monitoring the paltforms looking for profit opportunities. That is the reason why the funtcion `claimable` is a public function, so this searchers can more easily check if a given transaction is profitable or not. 
 
-```
-### Treasury
-As already pointed out, a percentage of the donations are taxed by the protocol and sent to a treasury. The intention is to, eventually implement a DAO like governance to decide how to alocate said funds to better the platform and/or fund other iniciatives that might benfit the community.
+This searchers, or _claimers_, will manifest in the form of bots, run by scripts to execute this task. Once there are enough searchers acting in this manner the distribution of funds by the platform will be automated making the operation quicker and more efficient.
