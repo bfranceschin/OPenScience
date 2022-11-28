@@ -14,13 +14,13 @@ const Navbar = () => {
         </a>
       </div>
       <div className="navbar-end">
-        <ul className="menu menu-horizontal p-0 pr-3 font-semibold uppercase">
-          <li >
+        <ul className="menu-horizontal p-0 pr-3 font-semibold uppercase focus:bg-none">
+          <li className="btn bg-transparent rounded-lg border-transparent">
             <Link href={"/explore"}>
               Explore
             </Link>
           </li>
-          <li >
+          <li className="btn bg-transparent rounded-lg border-transparent">
             <Link href={"/publish"}>
               Publish
             </Link>

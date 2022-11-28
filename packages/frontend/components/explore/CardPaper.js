@@ -1,5 +1,6 @@
 
 
+import Link from "next/link"
 import {
   useTokenMetaData,
   useTokenImage
@@ -7,6 +8,7 @@ import {
 
 import {
   ipfsToHTTP,
+  stringTrim
 } from '../../utils'
 
 const ImageIPFS = (imgUrl) => {
@@ -19,37 +21,35 @@ const CardPaper = ({tokenId, metadata}) => {
   let imageUrl = metadata ? ipfsToHTTP(metadata.image) : null
   const href = `/nfts/${tokenId}`
   return ( 
-    <div className="card w-96 bg-base-100 shadow-xl mb-5">
-      <div className="h-64 bg-base-300 place-content-center">
-        <figure className="h-full overflow-hidden">
-          <img width="384px" height="100px" src={imageUrl}/>
-        </figure>
-      </div>
-      <div className="card-body">
-        <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
-          <a
-            href={href}
-            className="transition-colors duration-200 text-gray-900 hover:text-purple-700"
-            aria-label="Category"
-            title="traveling"
+    <Link href={`/${href}`}>
+      <div className="card w-96 h-[480px]  bg-base-100 border border-black-100 shadow-md mb-5 transform transition duration-500 hover:scale-105">
+        {/* <div className="h-64 bg-base-300 place-content-center"> */}
+          <figure className="max-h-sm h-full overflow-hidden">
+            <img className="overflow-hidden" width="384px" height="100px" src={imageUrl}/>
+          </figure>
+        {/* </div> */}
+        <div className="card-body">
+          <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
+            <span
+              // href={href}
+              className="text-gray-900"
+            >
+              {metadata ? metadata.properties.author : ""}
+            </span>
+            {/* <span className="text-gray-600"> {props.date} </span> */}
+          </p>
+          <span
+            // href={href}
+            className="inline-block mb-3 text-2xl font-bold leading-7"
           >
-            {metadata ? metadata.properties.author : ""}
-          </a>
-          {/* <span className="text-gray-600"> {props.date} </span> */}
-        </p>
-        <a
-          href={href}
-          aria-label="Category"
-          title="Visit the East"
-          className="inline-block mb-3 text-2xl font-bold leading-5 transition-colors duration-200 hover:text-purple-700"
-        >
-          {metadata ? metadata.name : ""}
-        </a>
-        <p className="mb-2 text-gray-700">
-          {metadata ? metadata.properties.keywords : ""}
-        </p>
+            {metadata ? stringTrim(metadata.name, 50) : ""}
+          </span>
+          <p className="mb-2 text-gray-700">
+            {metadata ? metadata.properties.keywords : ""}
+          </p>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

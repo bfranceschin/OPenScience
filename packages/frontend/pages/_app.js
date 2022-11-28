@@ -8,7 +8,7 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 import { useIsMounted } from '../hooks';
 
@@ -56,7 +56,11 @@ const App = ({ Component, pageProps }) => {
   if (!isMounted) return null;
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider coolMode chains={chains}>
+      <RainbowKitProvider theme={darkTheme({
+        accentColor: '#7b3fe4',
+        accentColorForeground: 'white',
+        borderRadius: 'medium',
+      })} chains={chains} coolMode>
         <NextHead>
           <title>OPenScience</title>
         </NextHead>
