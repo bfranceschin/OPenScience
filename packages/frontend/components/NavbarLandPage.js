@@ -11,7 +11,7 @@ const NavbarLandPage = () => {
       </div>
       <div className="navbar-end">
         <Link href={'/explore'}>
-          <button className="btn bg-[#0B7A75] border-transparent text-white">Launch App</button>
+          <button className="btn bg-yellow-500 border-transparent text-white">Launch App</button>
         </Link>
       </div>
     </div>
