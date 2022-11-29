@@ -1,5 +1,7 @@
 import NavbarLandPage from '../components/NavbarLandPage';
 
+const github = "https://github.com/bfranceschin/encode-metaverse-hackathon#open-science-project"
+
 const Content1 = () => {
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
@@ -371,8 +373,8 @@ const Feature = () => {
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
         <div>
-          <p className="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 uppercase rounded-full bg-teal-accent-400">
-            Brand new
+          <p className="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 rounded-full bg-teal-accent-400">
+            OPenScience
           </p>
         </div>
         <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
@@ -408,7 +410,7 @@ const Feature = () => {
           accusantium doloremque rem aperiam, eaque ipsa quae.
         </p> */}
       </div>
-      <div className="grid gap-4 row-gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 row-gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col justify-between p-5 border rounded shadow-sm">
           <div>
             <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50">
@@ -432,7 +434,7 @@ const Feature = () => {
             </p>
           </div>
           <a
-            href="/"
+            href={github}
             aria-label=""
             className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
           >
@@ -456,14 +458,13 @@ const Feature = () => {
                 />
               </svg>
             </div>
-            <h6 className="mb-2 font-semibold leading-5">When has justice</h6>
+            <h6 className="mb-2 font-semibold leading-5">Permissionless publishing</h6>
             <p className="mb-3 text-sm text-gray-900">
-              Rough pomfret lemon shark plownose chimaera southern sandfish
-              kokanee northern sea.
+              Mint your paper as an NFT and make it available permanently on ethereum/ipfs.
             </p>
           </div>
           <a
-            href="/"
+            href={github}
             aria-label=""
             className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
           >
@@ -487,14 +488,43 @@ const Feature = () => {
                 />
               </svg>
             </div>
-            <h6 className="mb-2 font-semibold leading-5">Organically grow</h6>
+            <h6 className="mb-2 font-semibold leading-5">Donate</h6>
             <p className="mb-3 text-sm text-gray-900">
-              A slice of heaven. O for awesome, this chocka full cuzzie is as
-              rip-off as a cracker.
+              Invest in what you believe in. Contribute to the scientific achievements that you find most relevant.
             </p>
           </div>
           <a
-            href="/"
+            href={github}
+            aria-label=""
+            className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
+          >
+            Learn more
+          </a>
+        </div>
+        <div className="flex flex-col justify-between p-5 border rounded shadow-sm">
+          <div>
+            <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50">
+              <svg
+                className="w-12 h-12 text-deep-purple-accent-400"
+                stroke="currentColor"
+                viewBox="0 0 52 52"
+              >
+                <polygon
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                  points="29 13 14 29 25 29 23 39 38 23 27 23"
+                />
+              </svg>
+            </div>
+            <h6 className="mb-2 font-semibold leading-5">Graph-Funding</h6>
+            <p className="mb-3 text-sm text-gray-900">
+              Link your NFT with its research references and be part of retroactive public goods funding.
+            </p>
+          </div>
+          <a
+            href={github}
             aria-label=""
             className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
           >
