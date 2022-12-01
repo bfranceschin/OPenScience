@@ -12,6 +12,12 @@ describe("Testing the NFT contract", function () {
   let aliceAddress;
   let bobAddress
   let token_0;
+  const fee_base = 1000;
+  const fee_mul = 3;
+  const tax_base = 1000;
+  const tax_mul = 1;
+  const split_base = 3;
+  const split_mul = 2;
 
   const token0Uri = "https://protocol.ai/"
 
@@ -26,9 +32,11 @@ describe("Testing the NFT contract", function () {
   });
 
   it("Test name and tokenUri", async function () {
-    expect(await contract.name()).to.equal("SciGraph");
+    expect(await contract.name()).to.equal("OPen Science");
     expect(await contract.tokenURI(0)).to.equal(token0Uri);
   });
+
+  // TOD0: test getters
 
   it("Test donate method", async function () {
     // Parse the etherString representation of ether 
@@ -38,7 +46,7 @@ describe("Testing the NFT contract", function () {
     expect(await contract.getTreasuryBalance()).to.equal(0);
     // 
     await contract.connect(alice).donate(0, {value: donationAmount});
-    let net_donation = donationAmount.sub(donationAmount.div(100));
+    let net_donation = donationAmount.sub(donationAmount.mul(tax_mul).div(tax_base));
     let balance = await contract.tokenDonationBalance(0);
     expect(balance).to.eq(net_donation);
     let treasury_bal = await contract.getTreasuryBalance();
@@ -85,13 +93,14 @@ describe("Testing the NFT contract", function () {
     let owner_balance = await owner.getBalance();
     // 
     const donationAmount = ethers.utils.parseEther("1");
-    const net_donation = ( donationAmount.mul(99) ).div(100);
+    const net_donation = donationAmount.sub(donationAmount.mul(tax_mul).div(tax_base));
     await contract.connect(alice).donate(0, {value: donationAmount});
     expect( await contract.claimable(0,0)).to.eq(net_donation);
     // 
+    let claimer_fee = net_donation.mul(fee_mul).div(fee_base);
     await contract.connect(bob).claimToOwner(0);
     let owner_bal_2 = await owner.getBalance();
-    expect ( owner_bal_2).to.eq( owner_balance.add(  ( net_donation.mul(99) ).div(100)  ) );
+    expect ( owner_bal_2).to.eq( owner_balance.add(   net_donation.sub(claimer_fee)  ) );
     console.log('claimToOwner w/o refs passed');
     //
     //
@@ -105,13 +114,13 @@ describe("Testing the NFT contract", function () {
     let refs_2 = [0,1];
     await contract.createToken( token0Uri, refs_2 );
     await contract.connect(alice).donate( 2, {value: donationAmount} );
-    let claimable_by_owner = ( (net_donation.mul(2)).div(3) );
+    let claimable_by_owner = ( (net_donation.mul(split_mul)).div(split_base) );
     expect( await contract.claimable(2, 2) ).to.eq( claimable_by_owner  );
     // 
     owner_bal = await owner.getBalance();
     let bob_bal = await bob.getBalance();
     let tx_claim = await contract.connect(bob).claimToOwner(2);
-    let claimer_fee = claimable_by_owner.div(100);
+    claimer_fee = claimable_by_owner.mul(fee_mul).div(fee_base);
     owner_bal_2 = await owner.getBalance();
     expect ( owner_bal_2 ).to.eq( owner_bal.add( claimable_by_owner.sub(claimer_fee) ) );
     // 
@@ -135,15 +144,15 @@ describe("Testing the NFT contract", function () {
     await contract.createToken(token0Uri, refs);
     // 
     const donationAmount = ethers.utils.parseEther("1");
-    const net_donation = donationAmount.sub( donationAmount.div(100) );
+    const net_donation = donationAmount.sub( donationAmount.mul(tax_mul).div(tax_base) );
     await contract.connect(alice).donate(2, {value: donationAmount});
     // 
     expect(await contract.tokenDonationBalance(2)).to.eq(net_donation);
-    const claimable_by_ref = ( net_donation.div(3) ).div( refs.length );
+    const claimable_by_ref = ( net_donation.mul(split_base - split_mul).div(split_base) ).div( refs.length );
     expect( await contract.claimable(0, 2) ).to.eq( claimable_by_ref  );
     const claimer_bal = await owner.getBalance();
     const tx_claim = await contract.claimToRef(1, 2);
-    const claimer_fee = claimable_by_ref.div(100);
+    const claimer_fee = claimable_by_ref.mul(fee_mul).div(fee_base);
     expect( await contract.tokenDonationBalance(1)).to.eq(claimable_by_ref.sub(claimer_fee));
     expect( await contract.claimable(1,1)).to.eq(claimable_by_ref.sub(claimer_fee));
     await expect(contract.connect(alice).claimToRef(0,1)).to.be.revertedWith(
