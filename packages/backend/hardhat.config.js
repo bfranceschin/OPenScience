@@ -50,7 +50,7 @@ module.exports = {
       chainId: 5,
       url: `https://eth-goerli.alchemyapi.io/v2/${process.env.GOERLI_BET_TOGETHER_KEY}`,
       // url: `https://goerli.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
-      accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY}`],
+      accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY_2}`],
       // accounts: [`${process.env.PRIVATE_KEY}`],
     },
     // kovan: {
