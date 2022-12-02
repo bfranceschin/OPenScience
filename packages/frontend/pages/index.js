@@ -72,40 +72,15 @@ const Content1_2 = () => {
 
 const Feature = () => {
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px lg:px-8 lg:py-20">
+    {/* <div className="px-4 py-16 mx-auto md:px lg:px-8 lg:py-20 bg-base-300"> */}
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
         <div>
           <p className="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 rounded-full bg-teal-accent-400">
-            OPenScience
           </p>
         </div>
-        <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
-          <span className="relative inline-block">
-            <svg
-              viewBox="0 0 52 24"
-              fill="currentColor"
-              className="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block"
-            >
-              <defs>
-                <pattern
-                  id="18302e52-9e2a-4c8e-9550-0cbb21b38e55"
-                  x="0"
-                  y="0"
-                  width=".135"
-                  height=".30"
-                >
-                  <circle cx="1" cy="1" r=".7" />
-                </pattern>
-              </defs>
-              <rect
-                fill="url(#18302e52-9e2a-4c8e-9550-0cbb21b38e55)"
-                width="52"
-                height="24"
-              />
-            </svg>
-            <span className="relative">Take</span>
-          </span>{' '}
-          part in the open science revolution
+        <h2 className="mb-6 font-sans text-6xl font-bold leading-none tracking-tight text-gray-900 sm:text-6xl md:mx-auto">
+          Take part in the open science revolution
         </h2>
         {/* <p className="text-base text-gray-700 md:text-lg">
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem
@@ -195,7 +170,7 @@ const Team = () => {
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="grid gap-10 mx-auto sm:grid-cols-2 lg:grid-cols-3 lg:max-w-screen-lg">
-        <div>
+        <div className="grid place-items-center">
           <img
             className="object-cover w-24 h-24 rounded-full shadow"
             // src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=3&amp;h=750&amp;w=1260"
@@ -210,7 +185,7 @@ const Team = () => {
             </p>
           </div>
         </div>
-        <div>
+        <div className="grid place-items-center">
           <img
             className="object-cover w-24 h-24 rounded-full shadow"
             src="https://avatars.githubusercontent.com/u/16672082?v=4;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
@@ -224,7 +199,7 @@ const Team = () => {
             </p>
           </div>
         </div>
-        <div>
+        <div className="grid place-items-center">
           <img
             className="object-cover w-24 h-24 rounded-full shadow"
             // src="https://ipfs.io/ipfs/QmQmySEwVzpFgar9YTmdxvccYxXzaJo3Cbh6wZzrnJaqBG?filename=pedro_profile_pic.jpeg;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
@@ -248,8 +223,8 @@ const Team = () => {
 const Tech = () => {
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-      <div className="grid gap-10 mx-auto sm:grid-cols-2 lg:grid-cols-3 lg:max-w-screen-lg">
-        <div>
+      <div className="grid gap-10 mx-auto sm:grid-cols-2 lg:grid-cols-2 lg:max-w-screen-lg">
+        <div className="grid place-items-center">
           <img
             className="object-cover w-24 h-24 rounded-full shadow"
             // src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=3&amp;h=750&amp;w=1260"
@@ -260,7 +235,7 @@ const Tech = () => {
             <p className="text-lg font-bold">Optimism</p>
           </div>
         </div>
-        <div>
+        <div className="grid place-items-center">
           <img
             className="object-cover w-24 h-24 rounded-full shadow"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Ipfs-logo-1024-ice-text.png/600px-Ipfs-logo-1024-ice-text.png?20180220024806;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
@@ -413,39 +388,13 @@ const GraphFunding = () => {
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
         <div>
           <p className="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 rounded-full bg-teal-accent-400">
-            OpenScience
           </p>
         </div>
-        <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
-          <span className="relative inline-block">
-            <svg
-              viewBox="0 0 52 24"
-              fill="currentColor"
-              className="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block"
-            >
-              <defs>
-                <pattern
-                  id="3071a3ad-db4a-4cbe-ac9a-47850b69e4b7"
-                  x="0"
-                  y="0"
-                  width=".135"
-                  height=".30"
-                >
-                  <circle cx="1" cy="1" r=".7" />
-                </pattern>
-              </defs>
-              <rect
-                fill="url(#3071a3ad-db4a-4cbe-ac9a-47850b69e4b7)"
-                width="52"
-                height="24"
-              />
-            </svg>
-            <span className="relative">Graph-Funding</span>
-          </span>{' '}
-          technology
+        <h2 className="mb-6 font-sans text-6xl font-bold leading-none tracking-tight text-gray-900 sm:text-6xl">
+          Graph-Funding
         </h2>
-        <p className="text-base text-gray-700 md:text-lg">
-          An efficient and unbiased form of retroactive funding.
+        <p className="text-base text-gray-700 text-2xl">
+          An efficient and unbiased form of retroactive funding
         </p>
       </div>
       <div className="grid max-w-screen-lg gap-8 lg:grid-cols-2 sm:mx-auto">
