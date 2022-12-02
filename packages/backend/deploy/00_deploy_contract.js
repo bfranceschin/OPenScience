@@ -28,6 +28,16 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     tx = await contract.createToken(ethUri, ["0"])
     console.log("Adding eth paper: tx ", tx.hash)
     await tx.wait()
+
+    const optUri = "ipfs://bafyreia3z7ogps2mjt55bko3pmi63z5esmnwrebpsojfspdsitkfh6fbw4/metadata.json"
+    tx = await contract.createToken(optUri, ["0", "1"])
+    console.log("Adding eth paper: tx ", tx.hash)
+    await tx.wait()
+
+    const arbUri = "ipfs://bafyreifsncnzvabg3dxo5vhmi56giib6lewweyanmtnclvw2qwdr3nbote/metadata.json"
+    tx = await contract.createToken(arbUri, ["0", "1"])
+    console.log("Adding eth paper: tx ", tx.hash)
+    await tx.wait()
   }
 };
 module.exports.tags = ['all', 'NFT'];

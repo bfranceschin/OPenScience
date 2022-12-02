@@ -5,7 +5,7 @@
       "chainId": "420",
       "contracts": {
         "NFT": {
-          "address": "0xB9583709FA5B13D30a1A3DBcb0a45D6610113D11",
+          "address": "0x2EF65b86056A6B837a5dfd49E46544e77E1a486C",
           "abi": [
             {
               "inputs": [],
@@ -324,6 +324,24 @@
               "type": "function"
             },
             {
+              "inputs": [],
+              "name": "getFee",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
               "inputs": [
                 {
                   "internalType": "uint256",
@@ -337,6 +355,42 @@
                   "internalType": "uint256[]",
                   "name": "",
                   "type": "uint256[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getSplit",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getTax",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
                 }
               ],
               "stateMutability": "view",
@@ -516,6 +570,24 @@
             {
               "inputs": [
                 {
+                  "internalType": "uint24",
+                  "name": "base",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "multiplier",
+                  "type": "uint8"
+                }
+              ],
+              "name": "setClaimFee",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
                   "internalType": "uint256",
                   "name": "from",
                   "type": "uint256"
@@ -527,6 +599,42 @@
                 }
               ],
               "name": "setFollowMe",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint8",
+                  "name": "base",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "multiplier",
+                  "type": "uint8"
+                }
+              ],
+              "name": "setSplit",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint24",
+                  "name": "base",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "multiplier",
+                  "type": "uint8"
+                }
+              ],
+              "name": "setTax",
               "outputs": [],
               "stateMutability": "nonpayable",
               "type": "function"

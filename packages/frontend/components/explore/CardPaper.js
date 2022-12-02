@@ -21,7 +21,7 @@ const CardPaper = ({tokenId, metadata}) => {
   let imageUrl = metadata ? ipfsToHTTP(metadata.image) : null
   const href = `/nfts/${tokenId}`
   return ( 
-    <Link href={`/${href}`}>
+    <Link href={href}>
       <div className="card w-96 h-[480px]  bg-base-100 border border-black-100 shadow-md mb-5 transform transition duration-500 hover:scale-105">
         {/* <div className="h-64 bg-base-300 place-content-center"> */}
           <figure className="max-h-sm h-full overflow-hidden">
