@@ -78,7 +78,7 @@ contract NFT is ERC721URIStorage, ReentrancyGuard, Ownable {
  * split set at 2/3 
  */  
   constructor() ERC721(
-      "OPen Science", "OPSP"
+      "OPenScience", "OPSP"
     ) {
 
     _feeBase = 1000;

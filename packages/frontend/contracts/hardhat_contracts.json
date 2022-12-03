@@ -5,7 +5,7 @@
       "chainId": "420",
       "contracts": {
         "NFT": {
-          "address": "0x2EF65b86056A6B837a5dfd49E46544e77E1a486C",
+          "address": "0x0B7af654E0a7e03B0A507a61c99f1a436Fd6B07E",
           "abi": [
             {
               "inputs": [],
