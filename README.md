@@ -104,3 +104,10 @@ As already pointed out, a percentage of the donations are taxed by the protocol 
 As seen above, both pull functions are callable by any address. These functions send, according to some state variables, part of the balance of a particular NFT to its owner/references. The protocol pays a percentage fee over the value being claimed to the function's caller to encourage people to call said functions and provide this service. We expect that the profit opportunity that emerges from this dynamic will give rise to searchers (which we call _claimers_) who constantly monitor the paltform looking for profit opportunities. That is why the function `claimable` is a public function, so these searchers can more easily check if a given transaction is profitable or not. 
 
 These searchers, or _claimers_, will manifest in the form of bots run by scripts to execute this task. Once enough searchers act in this manner, the distribution of funds by the platform will be automated, making the operation quicker and more efficient.
+
+### Future work
+- Deployment on optimism mainnet
+- Integrate The Graph to improve the frontend scalability
+- Certification system to prevent fraud and scams
+- Onboarding of pre-existing works
+- Collectibles reward program for users
