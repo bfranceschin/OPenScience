@@ -3,11 +3,14 @@
 - [Introducing Graph-Funding Technology](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#introducing-graph-funding-technology)
 - [Overview of the problem](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#overview-of-the-problem)
 - [OPSPlatform application](https://github.com/bfranceschin/encode-metaverse-hackathon#opsplatform-application)
+- [Video demo](https://www.youtube.com/watch?v=AWPMc8GuxXk)
 
 ## Mission/OPSPlatform
 The **Open Science Project**'s mission is to make access to scientific information free and accessible to everyone while enabling scientists to receive funding for their endeavors.
 
 The first step in this mission is **OPen Science Platform**, a dapp where users can donate Ether to scientific works registered as NFTs. These NFTs can register other NFTs as reference and split the donation revenue with them, forming a big **funding graph** for scientific works. Aside from being a funding platform, it is also a publishing platform. Anyone with an Ethereum address can register works as NFTs and upload the related documents that will be stored using IPFS. Once that is done, a link to the paper is provided in the platform, making it **accessible to everyone**!!
+
+[Video demo](https://www.youtube.com/watch?v=AWPMc8GuxXk)
 
 ## Introducing Graph-Funding technology
 
@@ -104,6 +107,27 @@ As already pointed out, a percentage of the donations are taxed by the protocol 
 As seen above, both pull functions are callable by any address. These functions send, according to some state variables, part of the balance of a particular NFT to its owner/references. The protocol pays a percentage fee over the value being claimed to the function's caller to encourage people to call said functions and provide this service. We expect that the profit opportunity that emerges from this dynamic will give rise to searchers (which we call _claimers_) who constantly monitor the paltform looking for profit opportunities. That is why the function `claimable` is a public function, so these searchers can more easily check if a given transaction is profitable or not. 
 
 These searchers, or _claimers_, will manifest in the form of bots run by scripts to execute this task. Once enough searchers act in this manner, the distribution of funds by the platform will be automated, making the operation quicker and more efficient.
+
+For now, this task is performed by a simple [script](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/packages/backend/scripts/claimTrigger.js) that listens to the contract's events and send claim transactions whenever new donations arrive.
+
+### Dapp Frontend
+[Video demo](https://www.youtube.com/watch?v=AWPMc8GuxXk)
+#### Explore page
+Search papers by title, author, keywords and abstract.
+![Figure 2 publish page](images/frontend_explore.png)
+#### Nft page
+See the metadata, download the paper, donate.
+![Figure 2 publish page](images/frontend_nft.png)
+#### Publish page
+Enter the paper data and mint a nft.
+![Figure 4 publish page](images/frontend_publish.png)
+
+### Tech stack
+- [Optimism](https://www.optimism.io/)
+- [NFT.Storage](https://nft.storage/)
+- [create-web3](https://www.create-web3.xyz/)
+- [Next.js](https://nextjs.org/)
+- [Wagmi.sh](https://wagmi.sh/)
 
 ### Future work
 - Deployment on optimism mainnet
