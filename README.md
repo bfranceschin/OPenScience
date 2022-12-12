@@ -1,3 +1,5 @@
+This is a fork of the [original project](https://github.com/bfranceschin/encode-metaverse-hackathon) submitted to the Encode club Metaverse hackathon 2022.
+
 # Open Science Project
 - [Mission/OPSPlatform](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#missionopsplatform)
 - [Introducing Graph-Funding Technology](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#introducing-graph-funding-technology)
