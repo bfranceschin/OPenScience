@@ -74,7 +74,7 @@ export const useTokenMetaData = (tokenId) => {
 
 export const useAllMetadata = () => {
   const [allMetadata, setAllMetadata] = useState([])
-  const firstRender = useRef(true)
+  const requests = useRef({})
   const provider = useProvider()
   const { data: tokenCount, isError, isLoading } = useContractRead({
     address: contractAddress,
@@ -84,26 +84,25 @@ export const useAllMetadata = () => {
   })
 
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
     if (!tokenCount) {
       return
     }
     if (tokenCount > allMetadata.length) {
       for (let i=allMetadata.length; i<tokenCount; i++) {
-        getTokenMetadata(provider, i).then(
-          response => {
-            // console.log(i, response)
-            // allMetadata.push()
-            setAllMetadata(arr => {
-              const ret = [...arr, {tokenId: i.toString(), metadata: response.data}]
-              ret.sort((e1, e2) => e2.tokenId - e1.tokenId)
-              return ret
-            })
-          }
-        )
+        if (!requests.current[i]) {
+          requests.current[i] = getTokenMetadata(provider, i).then(
+            response => {
+              console.log(i, response)
+              // allMetadata.push()
+              setAllMetadata(arr => {
+                const ret = [...arr, {tokenId: i.toString(), metadata: response.data}]
+                ret.sort((e1, e2) => e2.tokenId - e1.tokenId)
+                return ret
+              })
+            }
+          ) 
+        }
+        
       }
     }
   },[tokenCount])
