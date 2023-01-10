@@ -1,4 +1,4 @@
-This is a fork of the [original project](https://github.com/bfranceschin/encode-metaverse-hackathon) submitted to the Encode club Metaverse hackathon 2022.
+This is a fork of the [original project](https://github.com/bfranceschin/encode-metaverse-hackathon) finalist of the [Encode club Metaverse hackathon 2022](https://twitter.com/encodeclub/status/1604832265124446209?s=20&t=5o8IkNiGb9HGKcvo8eax_Q).
 
 # Open Science Project
 - [Mission/OPSPlatform](https://github.com/bfranceschin/encode-metaverse-hackathon/blob/main/README.md#missionopsplatform)
