@@ -44,7 +44,7 @@ const PreviewCard = (props) => {
 
     return (
       <span className="text-gray-600">
-        {` — ${currentDay} ${formatCurrentMonth} ${currentYear}`}
+        {`${currentDay} ${formatCurrentMonth} ${currentYear}`}
       </span>
     )
   }
@@ -67,7 +67,6 @@ const PreviewCard = (props) => {
           >
             {props.author}
           </a>
-          {/* <span className="text-gray-600"> {PrintCurrentDate()} </span> */}
         </p>
         <a
           href="/"
@@ -77,16 +76,10 @@ const PreviewCard = (props) => {
         >
           {props.title}
         </a>
-        <p className="mb-2 text-gray-700">
+        <p className="mb-4 text-gray-700">
           {props.keywords}
         </p>
-        {/* <a
-          href="/"
-          aria-label=""
-          className="inline-flex items-center font-semibold transition-colors duration-200 text-gray-900 hover:text-purple-800"
-        >
-          Learn more
-        </a> */}
+        {/* <PrintCurrentDate /> */}
       </div>
     </div>
   )

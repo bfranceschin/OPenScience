@@ -21,12 +21,7 @@ import {NFT_STORAGE_KEY} from '../nftstoragekey';
 
 import {
   useContract,
-  useContractRead,
-  usePrepareContractWrite,
-  useContractWrite,
   useSigner,
-  useWaitForTransaction,
-  chain,
 } from "wagmi";
 
 import { getContractData } from '../utils'
@@ -131,15 +126,12 @@ export default function PublishComponent() {
       router.push(`/nfts/${tokenId}`)
     }
   }
-  
+
   return (
     <div>
       <Navbar/>
       <div className="bg-base-200 min-h-screen">
         <div className="hero min-h-fit bg-base-200 pt-6 pb-6">
-          {/* <div className="w-1/2 card drop-shadow-md bg-base-100 place-items-center"> */}
-          {/* <div className="w-1/2 card drop-shadow-md bg-base-100 place-items-center"> */}
-            {/* <div className="w-1/2 hero-content flex-col card lg:flex-row-reverse drop-shadow-md bg-base-100 relative"> */}
             <div className="w-3/5 hero-content flex-col card lg:flex-row-reverse drop-shadow-md bg-base-100 relative overflow-x-auto overflow-y-auto">
               <div>
                 <PreviewCard  
@@ -163,10 +155,6 @@ export default function PublishComponent() {
                 </div>
               </div>
             </div>
-            {/* <div className="w-4/5 form-control mt-6 pb-10">
-              <button className="btn btn-primary">Mint!</button>
-            </div> */}
-          {/* </div> */}
         </div>
       </div>
     </div>

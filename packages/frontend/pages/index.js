@@ -14,47 +14,6 @@ const Content1_2 = () => {
           aria-label="View"
           className="inline-block mb-5 rounded-full sm:mx-auto"
         >
-          {/* <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50"> */}
-            {/* <svg
-              className="w-12 h-12 text-deep-purple-accent-400"
-              stroke="currentColor"
-              viewBox="0 0 52 52"
-            >
-              <polygon
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-                points="29 13 14 29 25 29 23 39 38 23 27 23"
-              />
-            </svg> */}
-            {/* <svg className="mr-2" width="22px" height="22px" viewBox="0 0 22 22" fill="#FFFFFF" stroke="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.875 13.75h0.515v0.688c0 0.379 0.308 0.688 0.688 0.688h1.719c0.379 0 0.688 -0.308 0.688 -0.688v-0.688h0.515c0.759 0 1.375 -0.616 1.375 -1.375V2.75c0 -0.759 -0.616 -1.375 -1.375 -1.375V0.688c0 -0.379 -0.308 -0.688 -0.688 -0.688h-2.75c-0.379 0 -0.688 0.308 -0.688 0.688v0.688c-0.759 0 -1.375 0.616 -1.375 1.375v9.625c0 0.759 0.616 1.375 1.375 1.375zm13.063 5.5h-0.056C21.194 17.789 22 15.865 22 13.75c0 -4.549 -3.701 -8.25 -8.25 -8.25v2.75c3.033 0 5.5 2.467 5.5 5.5s-2.467 5.5 -5.5 5.5H2.063c-1.139 0 -2.063 0.923 -2.063 2.063 0 0.379 0.308 0.688 0.688 0.688h20.625c0.379 0 0.688 -0.308 0.688 -0.688 0 -1.139 -0.923 -2.063 -2.063 -2.063zm-15.469 -1.375h8.938c0.19 0 0.344 -0.154 0.344 -0.344v-0.688c0 -0.19 -0.154 -0.344 -0.344 -0.344H4.469c-0.19 0 -0.344 0.154 -0.344 0.344v0.688c0 0.19 0.154 0.344 0.344 0.344z"/></svg> */}
-            
-          {/* </div> */}
-          {/* <span className="relative inline-block mr-24">
-            <svg
-              viewBox="0 0 52 24"
-              fill="currentColor"
-              className="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block"
-            >
-              <defs>
-                <pattern
-                  id="679d5905-e08c-4b91-a66c-84aefbb9d2f5"
-                  x="0"
-                  y="0"
-                  width=".135"
-                  height=".30"
-                >
-                  <circle cx="1" cy="1" r=".7" />
-                </pattern>
-              </defs>
-              <rect
-                fill="url(#679d5905-e08c-4b91-a66c-84aefbb9d2f5)"
-                width="52"
-                height="24"
-              />
-            </svg>
-          </span> */}
         </a>
         <h2 className="mb-4 font-sans text-3xl font-bold tracking-tight text-[#E9F1F7] sm:text-8xl sm:leading-none uppercase">
           Open Science <span className="text-[#767B91]">for All</span>
@@ -73,7 +32,6 @@ const Content1_2 = () => {
 const Feature = () => {
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px lg:px-8 lg:py-20">
-    {/* <div className="px-4 py-16 mx-auto md:px lg:px-8 lg:py-20 bg-base-300"> */}
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
         <div>
           <p className="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 rounded-full bg-teal-accent-400">
@@ -82,10 +40,6 @@ const Feature = () => {
         <h2 className="mb-6 font-sans text-6xl font-bold leading-none tracking-tight text-gray-900 sm:text-6xl md:mx-auto">
           Take part in the open science revolution
         </h2>
-        {/* <p className="text-base text-gray-700 md:text-lg">
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque rem aperiam, eaque ipsa quae.
-        </p> */}
       </div>
       <div className="grid gap-4 row-gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col justify-between p-5 border rounded shadow-sm">
@@ -403,19 +357,6 @@ const GraphFunding = () => {
             <div className="mr-4">
               <div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-indigo-50">
                 <SVGLinked />
-                {/* <svg
-                  className="w-8 h-8 text-deep-purple-accent-400"
-                  stroke="currentColor"
-                  viewBox="0 0 52 52"
-                >
-                  <polygon
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                    points="29 13 14 29 25 29 23 39 38 23 27 23"
-                  />
-                </svg> */}
               </div>
             </div>
             <div>

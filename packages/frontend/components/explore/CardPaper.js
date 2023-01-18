@@ -1,21 +1,11 @@
 
 
 import Link from "next/link"
-import {
-  useTokenMetaData,
-  useTokenImage
-} from "../../hooks/nft"
 
 import {
   ipfsToHTTP,
   stringTrim
 } from '../../utils'
-
-const ImageIPFS = (imgUrl) => {
-  return (
-    <div></div>
-  )
-}
 
 const CardPaper = ({tokenId, metadata}) => {
   let imageUrl = metadata ? ipfsToHTTP(metadata.image) : null
@@ -23,11 +13,9 @@ const CardPaper = ({tokenId, metadata}) => {
   return ( 
     <Link href={href}>
       <div className="card w-96 h-[480px]  bg-base-100 border border-black-100 shadow-md mb-5 transform transition duration-500 hover:scale-105">
-        {/* <div className="h-64 bg-base-300 place-content-center"> */}
           <figure className="max-h-sm h-full overflow-hidden">
             <img className="overflow-hidden" width="384px" height="100px" src={imageUrl}/>
           </figure>
-        {/* </div> */}
         <div className="card-body">
           <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
             <span
@@ -36,7 +24,6 @@ const CardPaper = ({tokenId, metadata}) => {
             >
               {metadata ? metadata.properties.author : ""}
             </span>
-            {/* <span className="text-gray-600"> {props.date} </span> */}
           </p>
           <span
             // href={href}

@@ -57,11 +57,9 @@ const ReferenceInput = ({setReferences}) => {
         <span className="label-text uppercase font-base font-medium text-base">References</span>
       </label>
 
-      {/* <ReferencesTable removeReference={removeReference} referencesInfo={referenceList}/> */}
       {referenceList.length !== 0 
         ? <div className="overflow-x-auto overflow-y-auto mb-1">
               <table className="table w-full text-xs hover:bg-gray-50">
-                {/* <!-- head --> */}
                 <thead>
                   <tr>
                     <th></th>
