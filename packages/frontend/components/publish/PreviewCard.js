@@ -36,36 +36,49 @@ const PreviewCard = (props) => {
     )
   }
 
+  const ImagePreview = () => {
+    return <img width="384px" height="100px" src={imageTempURL} />
+  }
+
+  const Author = () =>
+    <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
+      <a
+        href="/"
+        className="transition-colors duration-200 text-gray-900 hover:text-purple-700"
+        aria-label="Category"
+        title="traveling"
+      >
+        {props.author}
+      </a>
+    </p>
+
+  const Title = () => 
+    <a
+      href="/"
+      aria-label="Category"
+      title="Visit the East"
+      className="inline-block mb-3 text-2xl font-bold leading-5 transition-colors duration-200 hover:text-purple-700"
+    >
+      {props.title}
+    </a>
+
+  const Keywords = () => 
+    <p className="mb-4 text-gray-700">
+      {props.keywords}
+    </p>
+
   return ( 
     <div className="card w-96 bg-base-100 border border-black-100 shadow-xl">
-       <figure className="h-full overflow-hidden">
+      <figure className="h-full overflow-hidden">
         {imageTempURL === "" 
           ? <ImageInputArea />
-          : <img width="384px" height="100px" src={imageTempURL} />
+          : <ImagePreview />
         }
       </figure>
       <div className="card-body">
-        <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
-          <a
-            href="/"
-            className="transition-colors duration-200 text-gray-900 hover:text-purple-700"
-            aria-label="Category"
-            title="traveling"
-          >
-            {props.author}
-          </a>
-        </p>
-        <a
-          href="/"
-          aria-label="Category"
-          title="Visit the East"
-          className="inline-block mb-3 text-2xl font-bold leading-5 transition-colors duration-200 hover:text-purple-700"
-        >
-          {props.title}
-        </a>
-        <p className="mb-4 text-gray-700">
-          {props.keywords}
-        </p>
+        <Author />
+        <Title />
+        <Keywords />
         <CurrentDate />
       </div>
     </div>
