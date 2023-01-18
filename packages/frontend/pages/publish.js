@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { NFTStorage, File } from 'nft.storage'
 
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/Navbar';
 import PreviewCard from '../components/publish/PreviewCard';
 import ReferenceInput from '../components/publish/ReferenceInput';
 import TitleInput from '../components/publish/TitleInput';

@@ -1,4 +1,4 @@
-import NavbarLandPage from '../components/NavbarLandPage';
+import NavbarLandPage from '../components/landPage/NavbarLandPage';
 
 const github = "https://github.com/bfranceschin/encode-metaverse-hackathon#open-science-project"
 
