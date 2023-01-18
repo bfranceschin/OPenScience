@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import CurrentDate from './CurrentDate'
+
 const PreviewCard = (props) => {
   const [filePath, setFilePath] = useState("");
   const [imageTempURL, setImageTempURL] = useState("");
@@ -34,21 +36,6 @@ const PreviewCard = (props) => {
     )
   }
 
-  const PrintCurrentDate = () => {
-    const currentDate = new Date()
-    const currentYear = currentDate.getFullYear()
-    const currentDay = currentDate.getDate()
-    const options = { month: 'long'}
-    const currentMonth = new Intl.DateTimeFormat('en-US', options).format(currentDate)
-    const formatCurrentMonth = currentMonth.slice(0, 3).toUpperCase()
-
-    return (
-      <span className="text-gray-600">
-        {`${currentDay} ${formatCurrentMonth} ${currentYear}`}
-      </span>
-    )
-  }
-
   return ( 
     <div className="card w-96 bg-base-100 border border-black-100 shadow-xl">
        <figure className="h-full overflow-hidden">
@@ -79,7 +66,7 @@ const PreviewCard = (props) => {
         <p className="mb-4 text-gray-700">
           {props.keywords}
         </p>
-        {/* <PrintCurrentDate /> */}
+        <CurrentDate />
       </div>
     </div>
   )
