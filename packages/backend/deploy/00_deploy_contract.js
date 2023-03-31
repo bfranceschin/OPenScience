@@ -14,7 +14,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   
   
   const chainId = await getChainId();
-  if (chainId === '420') { //goerliOptimism
+  // if (chainId === '420') { //goerliOptimism
+  if (chainId === '11155111' || chainId === '80001') { //sepolia and mumbai
     // Add initial nfts for testing purposes
     const {owner} = await getNamedAccounts();
     const contract = await ethers.getContract('NFT', owner);

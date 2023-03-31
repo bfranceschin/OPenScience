@@ -34,6 +34,13 @@ module.exports = {
 
     // L1 TEST NETWORKS
 
+    sepolia: {
+      chainId: 11155111,
+      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_SEPOLIA_API_KEY}`,
+      accounts: [`${process.env.PRIVATE_KEY}`],
+    },
+
+
     // ropsten: {
     //   chainId: 3,
     //   url: `https://eth-ropsten.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
@@ -46,13 +53,13 @@ module.exports = {
     //   url: `https://rinkeby.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
     //   accounts: [`${process.env.PRIVATE_KEY}`],
     // },
-    goerli: {
-      chainId: 5,
-      url: `https://eth-goerli.alchemyapi.io/v2/${process.env.GOERLI_BET_TOGETHER_KEY}`,
-      // url: `https://goerli.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
-      accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY_2}`],
-      // accounts: [`${process.env.PRIVATE_KEY}`],
-    },
+    // goerli: {
+    //   chainId: 5,
+    //   url: `https://eth-goerli.alchemyapi.io/v2/${process.env.GOERLI_BET_TOGETHER_KEY}`,
+    //   // url: `https://goerli.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
+    //   accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY_2}`],
+    //   // accounts: [`${process.env.PRIVATE_KEY}`],
+    // },
     // kovan: {
     //   chainId: 42,
     //   url: `https://eth-kovan.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
@@ -73,29 +80,33 @@ module.exports = {
 
     // L2 TEST NETWORKS
 
-    // mumbai: {
-    //   chainId: 80001,
-    //   url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
-    //   url: `https://polygon-mumbai.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
-    //   accounts: [`${process.env.PRIVATE_KEY}`],
-    // },
-    goerliOptimism: {
-      chainId: 420,
-      // url: "https://goerli.optimism.io/",
-      url: `https://opt-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_OPT_GOERLI_KEY}`,
-      accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY_2}`],
-      companionNetworks: {
-        l1: "goerli",
-      },
+    mumbai: {
+      chainId: 80001,
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_MUMBAI_API_KEY}`,
+      // url: `https://polygon-mumbai.infura.io/v3/${process.env.ALCHEMY_MUMBAI_API_KEY}`,
+      accounts: [`${process.env.PRIVATE_KEY}`],
     },
+    // goerliOptimism: {
+    //   chainId: 420,
+    //   // url: "https://goerli.optimism.io/",
+    //   url: `https://opt-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_OPT_GOERLI_KEY}`,
+    //   accounts: [`${process.env.OPT_GOERLI_PRIVATE_KEY_2}`],
+    //   companionNetworks: {
+    //     l1: "goerli",
+    //   },
+    // },
+
   },
   namedAccounts: {
     deployer: {
       default: 0, // here this will by default take the first account as deployer
     },
     tokenOwner: 1,
-    etherscan: {
-      apiKey: process.env.ETHERSCAN_API_KEY,
-    },
+    
+  },
+  etherscan: {
+    apiKey: {
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY,
+    }
   },
 };

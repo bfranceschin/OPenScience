@@ -9,6 +9,7 @@
     "deploy": "hardhat deploy --export-all ../frontend/contracts/hardhat_contracts.json",
     "compile": "hardhat compile",
     "test": "hardhat test",
+    "verify": "npx hardhat verify",
     "claimTestnet": "npx hardhat --network goerliOptimism run scripts/claimTrigger.js"
   },
   "devDependencies": {
